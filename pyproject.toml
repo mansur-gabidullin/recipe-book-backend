@@ -1,0 +1,43 @@
+[tool.poetry]
+name = "recipe-book-backend"
+version = "0.1.0"
+description = "Recipe Book"
+authors = ["Mansur Gabidullin <mansur.gabidullin@gmail.com>"]
+readme = "README.md"
+license = "MIT"
+packages = [
+    { include = "adapters", from = "src" },
+    { include = "application_core", from = "src" },
+    { include = "beans", from = "src" },
+    { include = "infrastructure", from = "src" },
+    { include = "ports", from = "src" },
+    { include = "user_interface", from = "src" },
+    { include = "shared_kernel", from = "src" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+gunicorn = "^20.1.0"
+uvicorn = "^0.20.0"
+pydantic = "^1.10.4"
+fastapi = "^0.89.1"
+asyncpg = "^0.27.0"
+python-dotenv = "^0.21.1"
+sqlalchemy = "^2.0.0"
+
+[tool.poetry.group.dev.dependencies]
+poethepoet = "^0.18.1"
+
+[tool.poetry.scripts]
+create_env = "main:create_env"
+init_db = "main:init_db"
+start = "main:run"
+poe = "poethepoet:main"
+
+[tool.poe.tasks]
+install = [{ cmd = "poetry install" }, { script = "poetry create_env" }]
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
