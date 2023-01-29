@@ -6,11 +6,11 @@ recipe_book_metadata = metadata("recipe-book-backend")
 
 
 class Settings(BaseSettings):
-    server_host: str = '0.0.0.0'
-    server_port: int = 9000
+    server_host: str
+    server_port: int
     db_name: str
     db_host: str
-    db_port: str
+    db_port: int
     db_user: str
     db_password: str
 

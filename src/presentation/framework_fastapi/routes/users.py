@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends
 
-from beans.dtos.user import UserDTO
-from beans.queries.users_list import UsersListQuery
-from ports.primary import IUsersController
-from shared_kernel.dependencies import users_query_factory, users_controller_factory
+from application_core.bounded_contexts.users.beans.dtos.user import UserDTO
+from application_core.bounded_contexts.users.beans.queries.users_list import UsersListQuery
+from application_core.bounded_contexts.users.ports.primary import IUsersController
+from dependencies import users_controller_factory, users_query_factory
 
 router = APIRouter(prefix='/users', tags=['users'])
 

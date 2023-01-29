@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Integer, Text
+from sqlalchemy import String
+from sqlalchemy.orm import Mapped, mapped_column
 
 from .base import Base
 
@@ -6,5 +7,5 @@ from .base import Base
 class Groups(Base):
     __tablename__ = 'groups'
 
-    id = Column('id', Integer, primary_key=True)
-    name = Column('name', Text, unique=True)
+    id: Mapped[int] = mapped_column('id', primary_key=True)
+    name: Mapped[str] = mapped_column('name', String(255), unique=True)

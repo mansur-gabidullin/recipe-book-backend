@@ -9,14 +9,14 @@ services:
         restart: unless-stopped
         tty: true
         ports:
-            - "${EXPOSED_DB_PORT:-4321}:${DB_PORT:-5432}"
+            - "${DB_PORT}:5432"
         environment:
-            - PGDATA=${DB_DATA_PATH:-/var/lib/postgresql/data}
-            - POSTGRES_DB=${DB_NAME:-postgres}
-            - POSTGRES_USER=${DB_USER:-postgres}
-            - POSTGRES_PASSWORD=${DB_PASSWORD:-password}
+            - PGDATA=${DB_DATA_PATH}
+            - POSTGRES_DB=${DB_NAME}
+            - POSTGRES_USER=${DB_USER}
+            - POSTGRES_PASSWORD=${DB_PASSWORD}
         volumes:
-            - ./data:${DB_DATA_PATH:-/var/lib/postgresql/data}
+            - ./data:${DB_DATA_PATH}
         networks:
             - recipe-book-network
 

@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from user_interface.framework_fastapi.routes import users, admin_panel, recipe_book
+from presentation.framework_fastapi.routes import users, admin_panel, recipe_book
 
 api_router = APIRouter(prefix='/api')
 api_router.include_router(users.router)

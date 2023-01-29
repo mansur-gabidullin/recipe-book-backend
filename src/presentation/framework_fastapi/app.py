@@ -1,8 +1,8 @@
 from fastapi import FastAPI, Request, Response
 
-from shared_kernel.settings import recipe_book_metadata
-from user_interface.framework_fastapi.api import api_router
+from settings import recipe_book_metadata
 from infrastructure.database_sqlalchemy.session import AsyncScopedSession
+from presentation.framework_fastapi.api import api_router
 
 tags_metadata = []
 

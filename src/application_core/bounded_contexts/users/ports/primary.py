@@ -1,7 +1,7 @@
 from typing import Protocol
 
-from beans.dtos.user import UserDTO
-from beans.queries.users_list import UsersListQuery
+from ..beans.dtos.user import UserDTO
+from ..beans.queries.users_list import UsersListQuery
 
 
 class IUsersController(Protocol):
