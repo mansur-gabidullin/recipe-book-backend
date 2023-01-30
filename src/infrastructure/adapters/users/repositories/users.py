@@ -1,18 +1,19 @@
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from application_core.bounded_contexts.users.beans.dtos.user import UserDTO
-from application_core.bounded_contexts.users.beans.queries.users_list import UsersListQuery
-from application_core.bounded_contexts.users.ports.secondary import IDatabaseSession
-from infrastructure.database_sqlalchemy.helpers import scalar_as_dict
-from infrastructure.database_sqlalchemy.tables.profiles import Profiles
-from infrastructure.database_sqlalchemy.tables.users import Users
+from application_core.bounded_contexts.users.beans.queries.users import UsersQuery
+
+from ....database_sqlalchemy.helpers import scalar_as_dict
+from ....database_sqlalchemy.tables.users.profiles import Profiles
+from ....database_sqlalchemy.tables.users.users import Users
 
 
 class UsersRepository:
-    def __init__(self, session: IDatabaseSession):
+    def __init__(self, session: AsyncSession):
         self._session = session
 
-    async def get_users_list(self, query: UsersListQuery) -> list[UserDTO]:
+    async def get_users(self, query: UsersQuery) -> list[UserDTO]:
         print(f'query = {query}')
         try:
             statement = select(Users, Profiles).join_from(Users, Profiles, isouter=True)

@@ -1,14 +1,14 @@
 from typing import Protocol
 
 from ..beans.dtos.user import UserDTO
-from ..beans.queries.users_list import UsersListQuery
+from ..beans.queries.users import UsersQuery
 
 
 class IUsersController(Protocol):
-    async def get_users_list(self, query: UsersListQuery) -> list[UserDTO]:
+    async def get_users_list(self, query: UsersQuery) -> list[UserDTO]:
         ...
 
 
-class IUsersService(Protocol):
-    async def execute(self, query: UsersListQuery) -> list[UserDTO]:
+class IAdministratorUseCase(Protocol):
+    async def fetch_users(self, query: UsersQuery) -> list[UserDTO]:
         ...

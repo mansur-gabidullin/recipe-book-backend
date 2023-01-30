@@ -1,8 +1,8 @@
 from fastapi import FastAPI, Request, Response
 
 from settings import recipe_book_metadata
-from infrastructure.database_sqlalchemy.session import AsyncScopedSession
-from presentation.framework_fastapi.api import api_router
+
+from .api import api_router
 
 tags_metadata = []
 
@@ -18,6 +18,8 @@ app.include_router(api_router)
 
 @app.middleware("http")
 async def db_session_middleware(request: Request, call_next):
+    from infrastructure.database_sqlalchemy.session import AsyncScopedSession
+
     response = Response("Internal server error", status_code=500)
 
     # noinspection PyBroadException
