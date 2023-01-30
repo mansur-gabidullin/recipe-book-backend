@@ -1,7 +1,9 @@
 from fastapi import APIRouter, Depends
 
-from application_core.bounded_contexts.users.beans.dtos.user import UserDTO
-from application_core.bounded_contexts.users.beans.queries.users import UsersQuery
+from application_core.bounded_contexts.users.beans.add_user_command_dto import AddUserCommandDTO
+from application_core.bounded_contexts.users.beans.add_user_result_dto import AddUserResultDTO
+from application_core.bounded_contexts.users.beans.user_dto import UserDTO
+from application_core.bounded_contexts.users.beans.users_query_dto import UsersQueryDTO
 from application_core.bounded_contexts.users.ports.primary import IUsersController
 
 from factories import users_controller_factory, users_query_factory
@@ -12,6 +14,14 @@ router = APIRouter(prefix='/users', tags=['users'])
 @router.get('/', response_model=list[UserDTO])
 async def get_users_list(
         controller: IUsersController = Depends(users_controller_factory),
-        query: UsersQuery = Depends(users_query_factory)
+        query: UsersQueryDTO = Depends(users_query_factory)
 ) -> list[UserDTO]:
     return await controller.get_users_list(query)
+
+
+@router.post('/', response_model=AddUserResultDTO)
+async def add_user(
+        command: AddUserCommandDTO,
+        controller: IUsersController = Depends(users_controller_factory),
+) -> AddUserResultDTO:
+    return await controller.add_user(command)

@@ -1,9 +1,7 @@
-from dataclasses import dataclass
+from pydantic import BaseModel
 
 
-@dataclass
-class UserEntity:
-    id: int
+class UserPO(BaseModel):
     login: str
     password_solt: str
     password_hash: str

@@ -17,20 +17,23 @@ app.include_router(api_router)
 
 
 @app.middleware("http")
-async def db_session_middleware(request: Request, call_next):
-    from infrastructure.database_sqlalchemy.session import AsyncScopedSession
+async def db_session_middleware(
+        request: Request,
+        call_next,
+):
+    from infrastructure.database_sqlalchemy.session import AsyncScopedSession, current_session
 
     response = Response("Internal server error", status_code=500)
 
     # noinspection PyBroadException
     try:
-        await AsyncScopedSession.begin()
+        await current_session.begin()
         response = await call_next(request)
-        await AsyncScopedSession.commit()
+        await current_session.commit()
     except Exception:
-        await AsyncScopedSession.rollback()
+        await current_session.rollback()
     finally:
-        await AsyncScopedSession.close()
+        await current_session.close()
         await AsyncScopedSession.remove()
 
     return response

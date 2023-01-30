@@ -4,5 +4,6 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_scoped_session, async_ses
 
 from .engine import engine
 
-async_session_factory = async_sessionmaker(engine, class_=AsyncSession)
+async_session_factory = async_sessionmaker(engine, class_=AsyncSession, autocommit=False, autoflush=False)
 AsyncScopedSession = async_scoped_session(async_session_factory, scopefunc=current_task)
+current_session = AsyncScopedSession()

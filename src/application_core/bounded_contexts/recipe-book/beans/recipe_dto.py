@@ -1,5 +1,5 @@
 from pydantic import BaseModel
 
 
-class UsersQuery(BaseModel):
+class RecipeDTO(BaseModel):
     ...
