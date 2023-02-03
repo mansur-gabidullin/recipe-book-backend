@@ -1,0 +1,13 @@
+from typing import Protocol
+
+from ..beans.user_po import UserPO
+from ..beans.users_query_dto import UsersQueryDTO
+from ..entities.user import UserEntity
+
+
+class IUsersRepository(Protocol):
+    async def get_users(self, query: UsersQueryDTO) -> list[UserEntity]:
+        ...
+
+    async def add_user(self, user: UserPO) -> int:
+        ...
