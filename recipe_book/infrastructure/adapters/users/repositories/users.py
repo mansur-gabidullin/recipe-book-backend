@@ -22,7 +22,7 @@ class UsersRepository:
             return [UserEntity(**scalar_as_dict(item)) for item in result.scalars()]
         except Exception as e:
             print(e)
-            return []
+            raise e
 
     async def add_user(self, user: UserPO) -> int:
         try:
