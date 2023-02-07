@@ -7,7 +7,7 @@ recipe_book_metadata = metadata("recipe-book-backend")
 
 
 class Settings(BaseSettings):
-    env_mode: Literal['development', 'production', 'testing'] = 'development'
+    env_mode: Literal["development", "production", "testing"] = "development"
     dev_frontend_origin: str
     server_host: str
     server_port: int
@@ -18,4 +18,4 @@ class Settings(BaseSettings):
     db_password: str
 
 
-settings = Settings(_env_file='.env', _env_file_encoding='utf-8')
+settings = Settings(_env_file=".env", _env_file_encoding="utf-8")

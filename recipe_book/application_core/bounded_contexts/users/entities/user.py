@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
-_solt: str = '0'
-_hash: str = '0'
+_solt: str = "0"
+_hash: str = "0"
 
 
 @dataclass

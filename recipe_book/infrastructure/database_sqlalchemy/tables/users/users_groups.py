@@ -7,8 +7,8 @@ from .groups import Groups
 
 
 class UsersGroups(Base):
-    __tablename__ = 'users_groups'
+    __tablename__ = "users_groups"
 
-    id: Mapped[int] = mapped_column('id', primary_key=True)
-    user_id = mapped_column('user_id', ForeignKey(Users.id), nullable=False)
-    group_id = mapped_column('group_id', ForeignKey(Groups.id), nullable=False)
+    id: Mapped[int] = mapped_column("id", primary_key=True)
+    user_id = mapped_column("user_id", ForeignKey(Users.id), nullable=False)
+    group_id = mapped_column("group_id", ForeignKey(Groups.id), nullable=False)

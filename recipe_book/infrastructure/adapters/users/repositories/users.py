@@ -15,7 +15,7 @@ class UsersRepository:
         self._session = session
 
     async def get_users(self, query: UsersQueryDTO) -> list[UserEntity]:
-        print(f'query = {query}')
+        print(f"query = {query}")
         try:
             statement = select(Users, Profiles).join_from(Users, Profiles, isouter=True)
             result = await self._session.execute(statement)
@@ -29,11 +29,11 @@ class UsersRepository:
             values = {
                 Users.login.key: user.login,
                 Users.password_solt.key: user.password_solt,
-                Users.password_hash.key: user.password_hash
+                Users.password_hash.key: user.password_hash,
             }
             statement = insert(Users).values(values).returning(Users.id)
             result = await self._session.execute(statement)
-            created_id, = result.one()
+            (created_id,) = result.one()
             return created_id
         except Exception as e:
             print(e)

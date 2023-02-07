@@ -21,15 +21,18 @@ async def database_session_factory() -> AsyncSession:
 
 
 async def users_repository_factory(
-        session: AsyncSession = Depends(database_session_factory, use_cache=True)) -> IUsersRepository:
+    session: AsyncSession = Depends(database_session_factory, use_cache=True)
+) -> IUsersRepository:
     return UsersRepository(session)
 
 
 async def admin_use_case_factory(
-        repository: IUsersRepository = Depends(users_repository_factory)) -> IAdministratorUseCase:
+    repository: IUsersRepository = Depends(users_repository_factory),
+) -> IAdministratorUseCase:
     return UsersAdminUseCase(repository)
 
 
 async def users_controller_factory(
-        admin_service: IAdministratorUseCase = Depends(admin_use_case_factory)) -> IUsersController:
+    admin_service: IAdministratorUseCase = Depends(admin_use_case_factory),
+) -> IUsersController:
     return UsersController(admin_service)

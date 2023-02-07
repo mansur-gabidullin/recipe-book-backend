@@ -2,8 +2,8 @@ def create_env():
     from os.path import isfile
     from shutil import copy
 
-    if not isfile(".env") and isfile('.env.example'):
-        copy('.env.example', '.env')
+    if not isfile("recipe_book/.env") and isfile("recipe_book/.env.example"):
+        copy("recipe_book/.env.example", "recipe_book/.env")
 
 
 def init_db():
@@ -34,11 +34,16 @@ def init_db():
 
 
 def start():
+    import os
+
+    if os.getcwd().endswith("/recipe-book-backend"):
+        os.chdir("recipe_book")
+
     import uvicorn
     from settings import settings
 
     uvicorn.run(
-        'presentation.framework_fastapi.app:app',
+        "presentation.framework_fastapi.app:app",
         host=settings.server_host,
         port=settings.server_port,
         reload=True,

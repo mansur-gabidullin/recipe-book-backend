@@ -5,7 +5,7 @@ from ..base import Base
 
 
 class Groups(Base):
-    __tablename__ = 'groups'
+    __tablename__ = "groups"
 
-    id: Mapped[int] = mapped_column('id', primary_key=True)
-    name: Mapped[str] = mapped_column('name', String(255), unique=True)
+    id: Mapped[int] = mapped_column("id", primary_key=True)
+    name: Mapped[str] = mapped_column("name", String(255), unique=True)

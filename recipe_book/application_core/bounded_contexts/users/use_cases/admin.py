@@ -20,11 +20,7 @@ class UsersAdminUseCase:
         try:
             password_solt, password_hash = UserEntity.generate_password()
 
-            user = UserPO(
-                **command.dict(),
-                password_solt=password_solt,
-                password_hash=password_hash
-            )
+            user = UserPO(**command.dict(), password_solt=password_solt, password_hash=password_hash)
         except Exception as e:
             print(e)
             raise e
