@@ -6,10 +6,11 @@ from ..beans.user_dto import UserDTO
 from ..beans.users_query_dto import UsersQueryDTO
 from ..beans.add_user_result_dto import AddUserResultDTO
 from ..entities.user import UserEntity
+from ..ports.primary import IAdministratorUseCase
 from ..ports.secondary import IUsersRepository
 
 
-class UsersAdminUseCase:
+class UsersAdminUseCase(IAdministratorUseCase):
     def __init__(self, repository: IUsersRepository):
         self._repository = repository
 

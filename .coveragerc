@@ -1,6 +1,10 @@
 # .coveragerc to control coverage.py
 [run]
 branch = True
+source =
+    recipe_book/*
+omit =
+    recipe_book/tests/*
 
 [report]
 # Regexes for lines to exclude from consideration

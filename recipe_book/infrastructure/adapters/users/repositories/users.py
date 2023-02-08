@@ -4,13 +4,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from application_core.bounded_contexts.users.beans.user_po import UserPO
 from application_core.bounded_contexts.users.beans.users_query_dto import UsersQueryDTO
 from application_core.bounded_contexts.users.entities.user import UserEntity
+from application_core.bounded_contexts.users.ports.secondary import IUsersRepository
 
 from ....database_sqlalchemy.helpers import scalar_as_dict
 from ....database_sqlalchemy.tables.users.profiles import Profiles
 from ....database_sqlalchemy.tables.users.users import Users
 
 
-class UsersRepository:
+class UsersRepository(IUsersRepository):
     def __init__(self, session: AsyncSession):
         self._session = session
 

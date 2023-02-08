@@ -9,6 +9,8 @@ packages = [{ include = "recipe_book" }]
 
 [tool.poetry.dependencies]
 python = "^3.11"
+
+[tool.poetry.group.prod.dependencies]
 python-dotenv = "^0.21.1"
 pydantic = "^1.10.4"
 fastapi = "^0.89.1"
@@ -18,12 +20,16 @@ uvicorn = "^0.20.0"
 gunicorn = "^20.1.0"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^7.2.1"
-pytest-cov = "^4.0.0"
 black = "^23.1.0"
-mypy = "^1.0.0"
 pylint = "^2.16.1"
+mypy = "^1.0.0"
 pre-commit = "^3.0.4"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^7.2.1"
+pytest-randomly = "^3.12.0"
+pytest-cov = "^4.0.0"
+pytest-asyncio = "^0.20.3"
 
 [tool.poetry.scripts]
 create_env = "recipe_book:create_env"
@@ -32,13 +38,13 @@ start = "recipe_book:start"
 
 [tool.pytest.ini_options]
 minversion = "6.0"
-addopts = "-v -vv -ra -q --strict-markers --no-cov-on-fail --cov-config=.coveragerc --cov=recipe_book --cov-report html"
+addopts = "-v -vv -ra -q --strict-markers --no-cov-on-fail --cov-config=.coveragerc --cov-report html --cov-report term --cov=recipe_book"
 markers = ["slow: marks tests as slow (deselect with '-m \"not slow\"')"]
-pythonpath = ["."]
-testpaths = ["tests"]
+pythonpath = ["recipe_book"]
+testpaths = ["recipe_book/tests"]
 
 [tool.pylint.master]
-init-hook = 'import sys; sys.path.append(".")'
+init-hook = 'import sys; sys.path.append("recipe_book")'
 
 [tool.pylint.format]
 max-line-length = 120
