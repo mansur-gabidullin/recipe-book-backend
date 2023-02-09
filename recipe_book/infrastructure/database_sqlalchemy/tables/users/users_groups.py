@@ -12,5 +12,5 @@ class UsersGroups(Base):
     __tablename__ = "users_groups"
 
     uuid = mapped_column("uuid", Uuid(as_uuid=True), primary_key=True, default=uuid4)
-    user_id = mapped_column("user_id", ForeignKey(Users.uuid), nullable=False)
-    group_id = mapped_column("group_id", ForeignKey(Groups.uuid), nullable=False)
+    user_id = mapped_column("user_id", ForeignKey(Users.uuid))
+    group_id = mapped_column("group_id", ForeignKey(Groups.uuid))

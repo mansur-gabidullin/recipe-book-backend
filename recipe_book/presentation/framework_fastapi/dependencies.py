@@ -1,15 +1,15 @@
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from application_core.bounded_contexts.users.beans.users_query_dto import UsersQueryDTO
-from application_core.bounded_contexts.users.ports.primary import IAdministratorUseCase, IUsersController
+from application_core.bounded_contexts.users.beans.queries.users_query_dto import UsersQueryDTO
+from application_core.bounded_contexts.users.ports.primary import IAdministratorUseCase, IAdminPanelController
 from application_core.bounded_contexts.users.ports.secondary import IUsersRepository
 from application_core.bounded_contexts.users.use_cases.admin import UsersAdminUseCase
 
 from infrastructure.adapters.users.repositories.users import UsersRepository
 from infrastructure.database_sqlalchemy.session import current_session
 
-from presentation.adapters.users.controllers.users import UsersController
+from presentation.adapters.users.controllers.admin_panel import AdminPanelController
 
 
 async def users_query_factory() -> UsersQueryDTO:
@@ -34,5 +34,5 @@ async def admin_use_case_factory(
 
 async def users_controller_factory(
     admin_service: IAdministratorUseCase = Depends(admin_use_case_factory),
-) -> IUsersController:
-    return UsersController(admin_service)
+) -> IAdminPanelController:
+    return AdminPanelController(admin_service)

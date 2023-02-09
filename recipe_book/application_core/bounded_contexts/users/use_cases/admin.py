@@ -1,10 +1,10 @@
 from dataclasses import asdict
 
+from ..beans.queries.users_query_dto import UsersQueryDTO
+from ..beans.commands.register_user_command_dto import RegisterUserCommandDTO
+from ..beans.results.register_user_result_dto import RegisterUserResultDTO
 from ..beans.user_po import UserPO
-from ..beans.add_user_command_dto import AddUserCommandDTO
 from ..beans.user_dto import UserDTO
-from ..beans.users_query_dto import UsersQueryDTO
-from ..beans.add_user_result_dto import AddUserResultDTO
 from ..entities.user import UserEntity
 from ..ports.primary import IAdministratorUseCase
 from ..ports.secondary import IUsersRepository
@@ -17,11 +17,10 @@ class UsersAdminUseCase(IAdministratorUseCase):
     async def handle_users_query(self, query: UsersQueryDTO) -> list[UserDTO]:
         return [UserDTO(**asdict(user)) for user in await self._repository.get_users(query)]
 
-    async def handle_add_user_command(self, command: AddUserCommandDTO) -> AddUserResultDTO:
+    async def handle_add_user_command(self, command: RegisterUserCommandDTO) -> RegisterUserResultDTO:
         try:
-            password_solt, password_hash = UserEntity.generate_password()
-            user = UserPO(**command.dict(), password_solt=password_solt, password_hash=password_hash)
-            return AddUserResultDTO(uuid=await self._repository.add_user(user))
+            user = UserPO(**command.dict(), password_hash=UserEntity.generate_password_hash(command.password))
+            return RegisterUserResultDTO(uuid=await self._repository.add_user(user))
         except Exception as e:
             # todo: validation errors
             # todo: logging

@@ -4,7 +4,7 @@ from sqlalchemy import select, insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from application_core.bounded_contexts.users.beans.user_po import UserPO
-from application_core.bounded_contexts.users.beans.users_query_dto import UsersQueryDTO
+from application_core.bounded_contexts.users.beans.queries.users_query_dto import UsersQueryDTO
 from application_core.bounded_contexts.users.entities.user import UserEntity
 from application_core.bounded_contexts.users.ports.secondary import IUsersRepository
 
@@ -24,12 +24,30 @@ class UsersRepository(IUsersRepository):
         return [UserEntity(**scalar_as_dict(item)) for item in result.scalars()]
 
     async def add_user(self, user: UserPO) -> UUID:
-        values = {
-            Users.login.key: user.login,
-            Users.password_solt.key: user.password_solt,
-            Users.password_hash.key: user.password_hash,
-        }
-        statement = insert(Users).values(values).returning(Users.uuid)
-        result = await self._session.execute(statement)
-        (uuid,) = result.one()
+        statement = (
+            insert(Users)
+            .values(
+                {
+                    Users.login.key: user.login,
+                    Users.password_hash.key: user.password_hash,
+                }
+            )
+            .returning(Users.uuid)
+        )
+
+        (uuid,) = (await self._session.execute(statement)).one()
+
+        statement = insert(Profiles).values(
+            {
+                Profiles.user_id.key: uuid,
+                Profiles.email.key: user.email,
+                Profiles.name.key: user.name,
+                Profiles.nickname.key: user.nickname,
+                Profiles.surname.key: user.surname,
+                Profiles.patronymic.key: user.patronymic,
+            }
+        )
+
+        await self._session.execute(statement)
+
         return uuid

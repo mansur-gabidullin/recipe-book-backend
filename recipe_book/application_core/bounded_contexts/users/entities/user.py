@@ -1,18 +1,16 @@
 from dataclasses import dataclass
 from uuid import UUID
 
-_solt: str = "0"
-_hash: str = "0"
+from argon2 import PasswordHasher
 
 
 @dataclass
 class UserEntity:
     uuid: UUID
     login: str
-    password_solt: str
     password_hash: str
     email: str = None
 
     @classmethod
-    def generate_password(cls) -> tuple[str, str]:
-        return str(int(_solt) + 1), str(int(_hash) + 1)
+    def generate_password_hash(cls, password: str) -> str:
+        return PasswordHasher().hash(password)

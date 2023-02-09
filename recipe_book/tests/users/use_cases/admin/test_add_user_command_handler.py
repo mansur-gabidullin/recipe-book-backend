@@ -8,7 +8,7 @@ from application_core.bounded_contexts.users.use_cases.admin import UsersAdminUs
 
 @pytest.mark.asyncio
 async def test_add_user_command_handler():
-    data = {"login": "test", "email": "test@test.com"}
+    data = {"login": "test", "password": "fake_password", "password_confirm": "fake_password", "email": "test@test.com"}
     command_dto = Mock(**data)
     command_dto.dict = Mock(return_value=data)
     fake_uuid = uuid4()

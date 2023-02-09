@@ -3,6 +3,8 @@ from typing import Final
 USER_LOGIN_MIN_LENGTH: Final = 5
 USER_LOGIN_MAX_LENGTH: Final = 255
 
+USER_PASSWORD_MIN_LENGTH: Final = 5
+
 USER_NAME_MIN_LENGTH: Final = 5
 USER_NAME_MAX_LENGTH: Final = 255
 
