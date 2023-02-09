@@ -1,8 +1,10 @@
+from uuid import uuid4
+
 from application_core.bounded_contexts.users.entities.user import UserEntity
 
 
 def test_user_entity():
-    data = {"id": 1, "login": "login", "password_hash": "hash", "password_solt": "solt", "email": None}
+    data = {"uuid": uuid4(), "login": "login", "password_hash": "hash", "password_solt": "solt", "email": None}
 
     email = "test@email.ru"
 
