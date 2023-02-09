@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from uuid import UUID
 
 _solt: str = "0"
 _hash: str = "0"
@@ -6,7 +7,7 @@ _hash: str = "0"
 
 @dataclass
 class UserEntity:
-    id: int
+    uuid: UUID
     login: str
     password_solt: str
     password_hash: str

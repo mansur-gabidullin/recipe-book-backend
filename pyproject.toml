@@ -12,7 +12,7 @@ python = "^3.11"
 
 [tool.poetry.group.prod.dependencies]
 python-dotenv = "^0.21.1"
-pydantic = "^1.10.4"
+pydantic = {extras = ["email"], version = "^1.10.4"}
 fastapi = "^0.89.1"
 asyncpg = "^0.27.0"
 sqlalchemy = "^2.0.2"
@@ -38,7 +38,7 @@ start = "recipe_book:start"
 
 [tool.pytest.ini_options]
 minversion = "6.0"
-addopts = "-v -vv -ra -q --strict-markers --no-cov-on-fail --cov-config=.coveragerc --cov-report html --cov-report term --cov=recipe_book"
+addopts = "-v -vv -ra -q --strict-markers --no-cov-on-fail --cov-config=.coveragerc --cov-report html --cov-report term-missing --cov=recipe_book"
 markers = ["slow: marks tests as slow (deselect with '-m \"not slow\"')"]
 pythonpath = ["recipe_book"]
 testpaths = ["recipe_book/tests"]

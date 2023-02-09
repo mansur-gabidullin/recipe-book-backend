@@ -7,6 +7,11 @@ def create_env():
 
 
 def init_db():
+    import os
+
+    if os.getcwd().endswith("/recipe-book-backend"):
+        os.chdir("recipe_book")
+
     import asyncio
 
     from infrastructure.database_sqlalchemy.engine import engine

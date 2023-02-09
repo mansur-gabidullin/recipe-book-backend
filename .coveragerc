@@ -1,10 +1,14 @@
 # .coveragerc to control coverage.py
 [run]
 branch = True
-source =
-    recipe_book/*
 omit =
     recipe_book/tests/*
+    recipe_book/__init__.py
+    recipe_book/__main__.py
+
+[paths]
+source =
+    recipe_book
 
 [report]
 # Regexes for lines to exclude from consideration
@@ -26,6 +30,8 @@ exclude_lines =
 
     # Don't complain about abstract methods, they aren't run:
     @(abc\.)?abstractmethod
+
+    \.\.\.
 
 ignore_errors = True
 

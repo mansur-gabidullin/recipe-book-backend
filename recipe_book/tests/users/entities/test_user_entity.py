@@ -8,7 +8,7 @@ def test_user_entity():
 
     user_entity = UserEntity(**data)
 
-    assert data.get("id") == user_entity.id
+    assert data.get("uuid") == user_entity.uuid
     assert data.get("login") == user_entity.login
     assert data.get("password_hash") == user_entity.password_hash
     assert data.get("password_solt") == user_entity.password_solt

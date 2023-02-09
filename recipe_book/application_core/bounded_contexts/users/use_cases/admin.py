@@ -20,10 +20,10 @@ class UsersAdminUseCase(IAdministratorUseCase):
     async def handle_add_user_command(self, command: AddUserCommandDTO) -> AddUserResultDTO:
         try:
             password_solt, password_hash = UserEntity.generate_password()
-
             user = UserPO(**command.dict(), password_solt=password_solt, password_hash=password_hash)
+            return AddUserResultDTO(uuid=await self._repository.add_user(user))
         except Exception as e:
+            # todo: validation errors
+            # todo: logging
             print(e)
             raise e
-
-        return AddUserResultDTO(id=await self._repository.add_user(user))
