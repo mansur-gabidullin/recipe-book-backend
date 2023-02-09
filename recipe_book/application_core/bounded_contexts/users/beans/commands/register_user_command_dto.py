@@ -25,9 +25,8 @@ class RegisterUserCommandDTO(BaseModel):
     surname: constr(min_length=USER_SURNAME_MIN_LENGTH, max_length=USER_SURNAME_MAX_LENGTH) = None
     patronymic: constr(min_length=USER_PATRONYMIC_MIN_LENGTH, max_length=USER_PATRONYMIC_MAX_LENGTH) = None
 
-    @classmethod
     @validator("password_confirm")
-    def passwords_match(cls, field_value, values):
+    def passwords_match(cls, field_value, values, **kwargs):
         if "password" in values and field_value != values["password"]:
             raise ValueError("passwords do not match")
         return field_value
