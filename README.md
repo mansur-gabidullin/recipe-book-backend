@@ -36,5 +36,32 @@ A backend for web app for cooking recipes.
 + Uvicorn
 + PostgresQL
 
-TODO:
-+ [ ] Logging
+### Todo
+
+#### admin-panel
+- [ ] super-user
+- [ ] Logging
+- [ ] Authentication by login/password
+- [ ] OAuth2.0
+- [ ] Sending emails
+- [ ] Permissions
+- [ ] Database migrations
+#### Recipe book
+- [ ] Photo storage
+- [ ] Parser
+- [ ] Telegram bot
+#### Monitoring
+- [ ] Collection of logs
+- [ ] Draw graphs
+- [ ] Send error notifications
+#### Frontend ([repo](https://github.com/mansur-gabidullin/recipe-book-frontend))
+- [ ] Captcha
+- [ ] SSR
+- [ ] Csrf-token
+#### Testing
+- [ ] unit-tests
+- [ ] API tests
+- [ ] Integration
+- [ ] E2E
+#### Docker
+- [ ] Dockerize everything
