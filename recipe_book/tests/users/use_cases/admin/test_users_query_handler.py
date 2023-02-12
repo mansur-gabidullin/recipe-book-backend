@@ -13,6 +13,8 @@ async def test_users_query_handler():
     class UserEntityMock:
         uuid: UUID = uuid4()
         login: str = "test"
+        password_hash: str = "fake password"
+        is_removed: bool = False
 
     repository = AsyncMock()
     user_entity = UserEntityMock()

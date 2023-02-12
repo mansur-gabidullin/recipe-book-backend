@@ -12,5 +12,5 @@ class RolesPermissions(Base):
     __tablename__ = "roles_permissions"
 
     uuid = mapped_column("uuid", Uuid(as_uuid=True), primary_key=True, default=uuid4)
-    role_id = mapped_column("role_id", ForeignKey(Roles.uuid))
-    permission_id = mapped_column("permission_id", ForeignKey(Permissions.uuid))
+    role_uuid = mapped_column("role_uuid", ForeignKey(Roles.uuid))
+    permission_uuid = mapped_column("permission_uuid", ForeignKey(Permissions.uuid))

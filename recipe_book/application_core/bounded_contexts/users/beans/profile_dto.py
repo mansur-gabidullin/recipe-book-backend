@@ -1,10 +1,12 @@
+from uuid import UUID
+
 from pydantic import BaseModel
 
 
-class UserPO(BaseModel):
-    login: str
-    password_hash: str
-    email: str = None
+class ProfileDTO(BaseModel):
+    uuid: UUID
+    user_uuid: UUID
+    email: str
     verified_email: str = None
     name: str = None
     nickname: str = None

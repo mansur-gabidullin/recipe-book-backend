@@ -1,9 +1,12 @@
 from uuid import UUID
 
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
+
+from .profile_dto import ProfileDTO
 
 
 class UserDTO(BaseModel):
     uuid: UUID
     login: str
-    email: EmailStr = None
+    is_removed: bool
+    profile: ProfileDTO = None

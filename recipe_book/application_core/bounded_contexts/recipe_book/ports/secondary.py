@@ -1,7 +1,7 @@
 from typing import Protocol
 
 from ..beans.recipes_query_dto import RecipesQueryDTO
-from ..entities.recipe import RecipeEntity
+from ..aggregates.recipe.root import RecipeEntity
 
 
 class IRecipesRepository(Protocol):

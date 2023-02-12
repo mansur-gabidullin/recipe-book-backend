@@ -1,4 +1,5 @@
 from application_core.bounded_contexts.users.beans.commands.register_user_command_dto import RegisterUserCommandDTO
+from application_core.bounded_contexts.users.beans.commands.remove_user_command_dto import RemoveUserCommandDTO
 from application_core.bounded_contexts.users.beans.results.register_user_result_dto import RegisterUserResultDTO
 from application_core.bounded_contexts.users.beans.user_dto import UserDTO
 from application_core.bounded_contexts.users.beans.queries.users_query_dto import UsersQueryDTO
@@ -14,3 +15,6 @@ class AdminPanelController(IAdminPanelController):
 
     async def add_user(self, command: RegisterUserCommandDTO) -> RegisterUserResultDTO:
         return await self._admin_service.handle_add_user_command(command)
+
+    async def remove_user(self, command: RemoveUserCommandDTO) -> None:
+        return await self._admin_service.handle_remove_user_command(command)
