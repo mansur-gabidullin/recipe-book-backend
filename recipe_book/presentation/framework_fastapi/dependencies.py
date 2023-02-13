@@ -3,6 +3,7 @@ from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from application_core.bounded_contexts.users.beans.queries.users_query_dto import UsersQueryDTO
+from application_core.bounded_contexts.users.beans.token_dto import Token
 from application_core.bounded_contexts.users.beans.user_dto import UserDTO
 from application_core.bounded_contexts.users.ports.primary import IAdministratorUseCase, IAdminPanelController
 from application_core.bounded_contexts.users.ports.secondary import (
@@ -45,6 +46,16 @@ async def access_token_creator_factory() -> IAccessTokenCreator:
         algorithm=settings.access_token_algorithm,
         expires_minutes=settings.access_token_expire_minutes,
     )
+
+
+async def access_token_factory(
+    form_data: OAuth2PasswordRequestForm = Depends(),
+    token_creator: IAccessTokenCreator = Depends(access_token_creator_factory),
+) -> Token:
+    try:
+        return Token(access_token=await token_creator.create(data={"sub": form_data.username}), token_type="bearer")
+    except Exception:
+        raise credentials_exception
 
 
 async def admin_use_case_factory(
