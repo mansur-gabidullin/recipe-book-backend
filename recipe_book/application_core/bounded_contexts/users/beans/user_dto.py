@@ -9,4 +9,5 @@ class UserDTO(BaseModel):
     uuid: UUID
     login: str
     is_removed: bool
+    is_active: bool
     profile: ProfileDTO = None

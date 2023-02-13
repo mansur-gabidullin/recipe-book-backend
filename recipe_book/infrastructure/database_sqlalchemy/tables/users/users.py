@@ -15,3 +15,4 @@ class Users(Base):
     login: Mapped[str] = mapped_column("login", String(USER_LOGIN_MAX_LENGTH), unique=True)
     password_hash: Mapped[str] = mapped_column("password_hash", Text)
     is_removed: Mapped[bool] = mapped_column("is_removed", Boolean, default=False)
+    is_active: Mapped[bool] = mapped_column("is_active", Boolean, default=False)

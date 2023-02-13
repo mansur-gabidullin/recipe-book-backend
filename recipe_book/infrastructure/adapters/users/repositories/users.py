@@ -20,13 +20,14 @@ class UsersRepository(IUsersRepository):
         self._session = session
 
     async def get_users(self, query: UsersQueryDTO) -> list[UserEntity]:
-        # todo: limits, pagination from query
-        print(f"query = {query}")
-
         result = []
         statement = select(Users, Profiles).join_from(Users, Profiles, full=True)
 
-        print(statement)
+        if query.login:
+            statement = statement.where(Users.login == query.login)
+
+        if query.limit:
+            statement = statement.limit(query.limit)
 
         for item in (await self._session.execute(statement)).mappings():
             profile = ProfileEntity(**scalar_as_dict(item.Profiles)) if item.Profiles else None
@@ -39,6 +40,7 @@ class UsersRepository(IUsersRepository):
             case {
                 "login": login,
                 "password_hash": password_hash,
+                "is_active": is_active,
                 "email": email,
                 "name": name,
                 "nickname": nickname,
@@ -51,6 +53,7 @@ class UsersRepository(IUsersRepository):
                         {
                             Users.login.key: login,
                             Users.password_hash.key: password_hash,
+                            Users.is_active.key: is_active,
                         }
                     )
                     .returning(Users.uuid)

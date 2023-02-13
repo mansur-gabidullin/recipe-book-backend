@@ -9,7 +9,7 @@ from application_core.bounded_contexts.users.beans.results.register_user_result_
 from application_core.bounded_contexts.users.beans.user_dto import UserDTO
 from application_core.bounded_contexts.users.ports.primary import IAdminPanelController
 
-from ..dependencies import users_controller_factory, users_query_factory
+from ..dependencies import users_controller_factory, users_query_factory, get_current_active_user
 
 router = APIRouter(prefix="/users", tags=["users"])
 
@@ -37,3 +37,8 @@ async def endpoint_for_creating_user(
 ) -> None:
     command = RemoveUserCommandDTO(uuid=uuid)
     return await controller.remove_user(command)
+
+
+@router.get("/current-active", response_model=UserDTO)
+async def endpoint_for_getting_current_user(current_user: UserDTO = Depends(get_current_active_user)):
+    return current_user

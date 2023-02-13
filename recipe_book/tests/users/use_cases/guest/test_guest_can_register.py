@@ -8,9 +8,11 @@ from application_core.bounded_contexts.users.use_cases.guest import UsersGuestUs
 
 @pytest.mark.asyncio
 async def test_guest_can_register():
-    data = {"login": "test", "password": "fake_password", "password_confirm": "fake_password", "email": "test@test.com"}
+    password = "fake_password"
+    data = {"login": "test", "password": password, "password_confirm": password, "email": "test@test.com"}
     register_command = Mock(**data)
     register_command.dict = Mock(return_value=data)
+    register_command.configure_mock(password=password)
     fake_uuid = uuid4()
 
     def mock_register(po):
@@ -20,7 +22,14 @@ async def test_guest_can_register():
     users_repository = Mock()
     users_repository.add_user = AsyncMock(side_effect=mock_register)
 
-    guest_use_case = UsersGuestUseCase(users_repository)
+    def hash_(password_):
+        assert password_ == password
+        return password_
+
+    password_hasher = AsyncMock
+    password_hasher.hash = AsyncMock(side_effect=hash_)
+
+    guest_use_case = UsersGuestUseCase(users_repository, password_hasher)
 
     await guest_use_case.handle_register_command(register_command)
 

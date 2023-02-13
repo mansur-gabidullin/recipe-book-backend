@@ -42,8 +42,8 @@ async def db_session_middleware(
         response = await call_next(request)
         await current_session.commit()
     except Exception as error:
-        print(error)
         # todo: validation errors to response
+        print(error)
         await current_session.rollback()
     finally:
         await current_session.close()

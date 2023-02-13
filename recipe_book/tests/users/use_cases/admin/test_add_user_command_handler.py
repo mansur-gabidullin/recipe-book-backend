@@ -8,8 +8,10 @@ from application_core.bounded_contexts.users.use_cases.admin import UsersAdminUs
 
 @pytest.mark.asyncio
 async def test_add_user_command_handler():
-    data = {"login": "test", "password": "fake_password", "password_confirm": "fake_password", "email": "test@test.com"}
+    password = "fake_password"
+    data = {"login": "test", "password": password, "password_confirm": password, "email": "test@test.com"}
     command_dto = Mock(**data)
+    command_dto.configure_mock(password=password)
     command_dto.dict = Mock(return_value=data)
     fake_uuid = uuid4()
 
@@ -20,7 +22,15 @@ async def test_add_user_command_handler():
 
     repository = AsyncMock()
     repository.add_user = AsyncMock(side_effect=mock_add_user)
-    use_case = UsersAdminUseCase(repository)
+
+    def hash_(password_):
+        assert password_ == password
+        return password_
+
+    password_hasher = AsyncMock
+    password_hasher.hash = AsyncMock(side_effect=hash_)
+
+    use_case = UsersAdminUseCase(repository, password_hasher)
 
     await use_case.handle_add_user_command(command_dto)
 

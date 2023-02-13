@@ -15,14 +15,16 @@ async def test_users_query_handler():
         login: str = "test"
         password_hash: str = "fake password"
         is_removed: bool = False
+        is_active: bool = False
 
     repository = AsyncMock()
     user_entity = UserEntityMock()
     repository.get_users = AsyncMock(return_value=[user_entity])
 
     query_dto = Mock()
+    password_hasher = Mock()
 
-    use_case = UsersAdminUseCase(repository)
+    use_case = UsersAdminUseCase(repository, password_hasher)
     await use_case.handle_users_query(query_dto)
 
     repository.get_users.assert_awaited_once()

@@ -17,7 +17,10 @@ async def test_remove_user_command_handler():
 
     repository = AsyncMock()
     repository.remove_user = AsyncMock(side_effect=mock_remove_user)
-    use_case = UsersAdminUseCase(repository)
+
+    password_hasher = Mock()
+
+    use_case = UsersAdminUseCase(repository, password_hasher)
 
     await use_case.handle_remove_user_command(command_dto)
 
