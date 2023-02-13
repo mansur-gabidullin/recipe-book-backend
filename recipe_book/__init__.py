@@ -1,4 +1,16 @@
+from sqlalchemy import insert
+
+
+def check_dir():
+    import os
+
+    if os.getcwd().endswith("/recipe-book-backend"):
+        os.chdir("recipe_book")
+
+
 def create_env():
+    check_dir()
+
     from os.path import isfile
     from secrets import token_hex
 
@@ -18,10 +30,7 @@ def create_env():
 
 
 def init_db():
-    import os
-
-    if os.getcwd().endswith("/recipe-book-backend"):
-        os.chdir("recipe_book")
+    check_dir()
 
     import asyncio
 
@@ -41,19 +50,35 @@ def init_db():
     )
 
     async def init_models():
+        check_dir()
+
+        from infrastructure.database_sqlalchemy.tables.users.users import Users
+        from infrastructure.password_hasher import PasswordHasher
+
         async with engine.connect() as connection:
             async with connection.begin():
                 await connection.run_sync(Base.metadata.drop_all)
                 await connection.run_sync(Base.metadata.create_all)
 
+                statement = (
+                    insert(Users)
+                    .values(
+                        {
+                            "login": "admin",
+                            "password_hash": await PasswordHasher().hash("admin"),
+                            "is_active": True,
+                        }
+                    )
+                    .returning(Users.uuid)
+                )
+
+                await connection.execute(statement)
+
     asyncio.run(init_models())
 
 
 def start():
-    import os
-
-    if os.getcwd().endswith("/recipe-book-backend"):
-        os.chdir("recipe_book")
+    check_dir()
 
     import uvicorn
     from settings import settings

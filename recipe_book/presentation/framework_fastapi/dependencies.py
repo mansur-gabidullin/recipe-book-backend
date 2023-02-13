@@ -22,8 +22,6 @@ from presentation.framework_fastapi.exceptions import credentials_exception
 
 from settings import settings
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/auth/token")
-
 
 async def users_query_factory() -> UsersQueryDTO:
     return UsersQueryDTO()
@@ -62,12 +60,25 @@ async def users_controller_factory(
     return AdminPanelController(admin_service)
 
 
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/auth/token")
+
+
+def check_access_token_exists(token: str = Depends(oauth2_scheme)) -> None:
+    if not token:
+        raise credentials_exception
+
+
 async def authenticate_user(
     form_data: OAuth2PasswordRequestForm = Depends(),
     repository: IUsersRepository = Depends(users_repository_factory),
     passwordHasher: IPasswordHasher = Depends(password_hasher_factory),
 ) -> None:
-    user = (await repository.get_users(UsersQueryDTO(login=form_data.username, limit=1)))[0]
+    users = await repository.get_users(UsersQueryDTO(login=form_data.username, limit=1))
+
+    if not len(users):
+        raise credentials_exception
+
+    user = users[0]
 
     if (
         not user
@@ -92,7 +103,12 @@ async def get_current_user(
     except Exception:
         raise credentials_exception
 
-    user = (await user_service.handle_users_query(UsersQueryDTO(login=login, limit=1)))[0]
+    users = await user_service.handle_users_query(UsersQueryDTO(login=login, limit=1))
+
+    if not len(users):
+        raise credentials_exception
+
+    user = users[0]
 
     if not user or user.is_removed:
         raise credentials_exception

@@ -39,6 +39,6 @@ async def endpoint_for_creating_user(
     return await controller.remove_user(command)
 
 
-@router.get("/current-active", response_model=UserDTO)
+@router.get("/profile", response_model=UserDTO)
 async def endpoint_for_getting_current_user(current_user: UserDTO = Depends(get_current_active_user)):
     return current_user

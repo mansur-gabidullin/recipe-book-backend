@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request, Response
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 
 from settings import recipe_book_metadata, settings
@@ -32,9 +32,9 @@ async def db_session_middleware(
     request: Request,
     call_next,
 ):
-    from infrastructure.database_sqlalchemy.session import current_session, AsyncScopedSession
+    from infrastructure.database_sqlalchemy.session import AsyncScopedSession
 
-    response = Response("Internal server error", status_code=500)
+    current_session = AsyncScopedSession()
 
     # noinspection PyBroadException
     try:
@@ -42,9 +42,11 @@ async def db_session_middleware(
         response = await call_next(request)
         await current_session.commit()
     except Exception as error:
-        # todo: validation errors to response
-        print(error)
         await current_session.rollback()
+        # todo: validation errors to response
+        # response = Response("Internal server error", status_code=500)
+        raise error
+
     finally:
         await current_session.close()
         await AsyncScopedSession.remove()

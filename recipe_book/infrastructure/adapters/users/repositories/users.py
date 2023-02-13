@@ -81,6 +81,7 @@ class UsersRepository(IUsersRepository):
                 raise TypeError("argument user is at wrong type")
 
     async def remove_user(self, uuid: UUID) -> None:
+        # todo: prevent delete last active admin user
         update_statement = update(Users).where(Users.uuid == uuid).values({Users.is_removed.key: True})
         delete_statement = delete(Profiles).where(Profiles.user_uuid == uuid)
 
