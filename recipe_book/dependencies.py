@@ -2,6 +2,7 @@ from uuid import UUID
 
 from fastapi import Depends
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
+from pydantic import EmailStr
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from application_core.users.interfaces.access_token_creator import IAccessTokenCreator
@@ -27,7 +28,7 @@ from presentation.beans.add_user_command import AddUserCommand
 from presentation.beans.remove_user_command import RemoveUserCommand
 from presentation.beans.token import Token
 from presentation.beans.users_query import UsersQuery
-from presentation.converters.user_service import UsersConverter
+from presentation.converters.users_service import UsersConverter
 from presentation.exceptions import credentials_exception
 
 from settings import settings
@@ -43,7 +44,7 @@ async def create_add_user_command(
     login: str,
     password: str,
     password_confirm: str,
-    email: str,
+    email: EmailStr,
     name: str = None,
     nickname: str = None,
     surname: str = None,
