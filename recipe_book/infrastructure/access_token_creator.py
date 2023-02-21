@@ -1,10 +1,10 @@
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor, as_completed, Future
 from datetime import timedelta, datetime
 
 from jose import jwt, JWTError
 from jose.exceptions import JWTClaimsError, ExpiredSignatureError
 
-from application_core.bounded_contexts.users.ports.secondary import IAccessTokenCreator
+from application_core.users.interfaces.access_token_creator import IAccessTokenCreator
 
 
 class AccessTokenCreator(IAccessTokenCreator):
@@ -19,7 +19,8 @@ class AccessTokenCreator(IAccessTokenCreator):
         to_encode.update({"exp": datetime.utcnow() + self._expires_delta})
 
         with ThreadPoolExecutor() as executor:
-            (future,) = as_completed(
+            future: Future
+            [future] = as_completed(
                 [executor.submit(lambda: self._encoder.encode(to_encode, self._secret_key, algorithm=self._algorithm))]
             )
             try:
@@ -30,7 +31,8 @@ class AccessTokenCreator(IAccessTokenCreator):
 
     async def read(self, token: str) -> dict:
         with ThreadPoolExecutor() as executor:
-            (future,) = as_completed(
+            future: Future
+            [future] = as_completed(
                 [executor.submit(lambda: self._encoder.decode(token, self._secret_key, algorithms=[self._algorithm]))]
             )
             try:

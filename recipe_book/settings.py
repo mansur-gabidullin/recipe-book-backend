@@ -16,9 +16,10 @@ class Settings(BaseSettings):
     db_port: int
     db_user: str
     db_password: str
-    access_token_expire_minutes: int
     access_token_algorithm: str
     access_token_secret_key: str
+    access_token_expire_minutes: int
+    refresh_token_expire_days: int
 
 
 settings = Settings(_env_file=".env", _env_file_encoding="utf-8")

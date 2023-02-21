@@ -34,8 +34,8 @@ def init_db():
 
     import asyncio
 
-    from infrastructure.database_sqlalchemy.engine import engine
-    from infrastructure.database_sqlalchemy.tables.base import Base
+    from infrastructure.engine import engine
+    from infrastructure.tables.base import Base
 
     # this imports needs for Base.metadata.create_all while running init_db script
     # noinspection PyUnresolvedReferences
@@ -52,7 +52,7 @@ def init_db():
     async def init_models():
         check_dir()
 
-        from infrastructure.database_sqlalchemy.tables.users.users import Users
+        from infrastructure.tables.users.users import Users
         from infrastructure.password_hasher import PasswordHasher
 
         async with engine.connect() as connection:
@@ -84,7 +84,7 @@ def start():
     from settings import settings
 
     uvicorn.run(
-        "presentation.framework_fastapi.app:app",
+        "presentation.app:app",
         host=settings.server_host,
         port=settings.server_port,
         reload=True,
