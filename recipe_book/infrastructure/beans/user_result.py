@@ -1,15 +1,14 @@
 from uuid import UUID
 
-from pydantic import BaseModel
+from dataclasses import dataclass
+
+from application_core.users.interfaces.user_result import IUserResult
 
 from infrastructure.beans.profile_result import ProfileResult
 
 
-# from application_core.users.interfaces.user_result import IUserResult
-# from application_core.users.interfaces.profile_result import IProfileResult
-
-
-class UserResult(BaseModel):
+@dataclass
+class UserResult(IUserResult):
     uuid: UUID
     login: str
     password_hash: str

@@ -26,7 +26,7 @@ class UsersServiceConverter(IUsersServiceConverter):
                     nickname=user.profile.nickname,
                     surname=user.profile.surname,
                     patronymic=user.profile.patronymic,
-                ),
+                ) if user.profile else None,
             )
             for user in users
         ]

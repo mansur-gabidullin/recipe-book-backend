@@ -1,7 +1,10 @@
 from uuid import UUID
 
-from pydantic import BaseModel
+from dataclasses import dataclass
+
+from application_core.users.interfaces.remove_user_command import IRemoveUserCommand
 
 
-class RemoveUserCommand(BaseModel):  # implements IRemoveUserCommand
+@dataclass
+class RemoveUserCommand(IRemoveUserCommand):
     uuid: UUID

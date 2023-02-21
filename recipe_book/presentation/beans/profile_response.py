@@ -1,7 +1,10 @@
-from pydantic import BaseModel
+from dataclasses import dataclass
+
+from presentation.interfaces.profile_response import IProfileResponse
 
 
-class ProfileResponse(BaseModel):  # implements IProfileResponse
+@dataclass
+class ProfileResponse(IProfileResponse):
     email: str
     name: str = None
     nickname: str = None

@@ -1,7 +1,10 @@
-from pydantic import BaseModel
+from dataclasses import dataclass
+
+from application_core.users.interfaces.user_data import IUserData
 
 
-class UserData(BaseModel):  # implements IUserData
+@dataclass
+class UserData(IUserData):
     is_active: bool
     login: str
     password_hash: str

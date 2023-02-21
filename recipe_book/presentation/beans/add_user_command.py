@@ -1,4 +1,5 @@
-from pydantic import BaseModel, EmailStr, constr, validator
+from pydantic import EmailStr, constr, validator
+from dataclasses import dataclass
 
 from application_core.users.constants import (
     USER_LOGIN_MIN_LENGTH,
@@ -13,9 +14,11 @@ from application_core.users.constants import (
     USER_PATRONYMIC_MAX_LENGTH,
     USER_PASSWORD_MIN_LENGTH,
 )
+from application_core.users.interfaces.add_user_command import IAddUserCommand
 
 
-class AddUserCommand(BaseModel):  # implements IAddUserCommand
+@dataclass
+class AddUserCommand(IAddUserCommand):
     login: constr(min_length=USER_LOGIN_MIN_LENGTH, max_length=USER_LOGIN_MAX_LENGTH)
     password: constr(min_length=USER_PASSWORD_MIN_LENGTH)
     password_confirm: constr(min_length=USER_PASSWORD_MIN_LENGTH)

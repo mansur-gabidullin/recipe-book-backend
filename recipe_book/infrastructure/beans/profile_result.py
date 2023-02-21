@@ -1,9 +1,12 @@
 from uuid import UUID
 
-from pydantic import BaseModel
+from dataclasses import dataclass
+
+from application_core.users.interfaces.profile_result import IProfileResult
 
 
-class ProfileResult(BaseModel):  # implements IProfileResult
+@dataclass
+class ProfileResult(IProfileResult):
     uuid: UUID
     user_uuid: UUID
     email: str
