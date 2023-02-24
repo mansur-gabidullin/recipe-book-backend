@@ -39,7 +39,7 @@ def init_db():
 
     # this imports needs for Base.metadata.create_all while running init_db script
     # noinspection PyUnresolvedReferences
-    from infrastructure.database_sqlalchemy.tables.users import (
+    from infrastructure.tables.users import (
         groups,
         permissions,
         profiles,

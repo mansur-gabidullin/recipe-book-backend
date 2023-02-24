@@ -57,6 +57,7 @@ class UsersRepository(IUsersRepository):
                 {
                     Profiles.user_uuid.key: uuid,
                     Profiles.email.key: user_data.email,
+                    Profiles.phone_number.key: user_data.phone_number,
                     Profiles.name.key: user_data.name,
                     Profiles.nickname.key: user_data.nickname,
                     Profiles.surname.key: user_data.surname,

@@ -9,6 +9,7 @@ class UserData(IUserData):
     login: str
     password_hash: str
     email: str
+    phone_number: str = None
     name: str = None
     nickname: str = None
     surname: str = None

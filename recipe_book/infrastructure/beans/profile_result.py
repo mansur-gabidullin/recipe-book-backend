@@ -11,6 +11,8 @@ class ProfileResult(IProfileResult):
     user_uuid: UUID
     email: str
     verified_email: str = None
+    phone_number: str = None
+    verified_phone_number: str = None
     name: str = None
     nickname: str = None
     surname: str = None

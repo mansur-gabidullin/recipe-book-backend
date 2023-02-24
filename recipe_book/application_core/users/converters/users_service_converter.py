@@ -22,6 +22,7 @@ class UsersServiceConverter(IUsersServiceConverter):
                     user_uuid=user.profile.user_uuid,
                     email=user.profile.email,
                     verified_email=user.profile.verified_email,
+                    verified_phone_number=user.profile.verified_phone_number,
                     name=user.profile.name,
                     nickname=user.profile.nickname,
                     surname=user.profile.surname,

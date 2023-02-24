@@ -2,7 +2,6 @@ from uuid import UUID
 
 from fastapi import Depends
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
-from pydantic import EmailStr
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from application_core.users.interfaces.access_token_creator import IAccessTokenCreator
@@ -41,25 +40,9 @@ async def create_users_query(login: str = None, limit: int = None) -> IUsersQuer
 
 
 async def create_add_user_command(
-    login: str,
-    password: str,
-    password_confirm: str,
-    email: EmailStr,
-    name: str = None,
-    nickname: str = None,
-    surname: str = None,
-    patronymic: str = None,
+    addUserCommand: AddUserCommand
 ) -> IAddUserCommand:
-    return AddUserCommand(
-        login=login,
-        password=password,
-        password_confirm=password_confirm,
-        email=email,
-        name=name,
-        nickname=nickname,
-        surname=surname,
-        patronymic=patronymic,
-    )
+    return addUserCommand
 
 
 async def create_remove_user_command(uuid: UUID):
