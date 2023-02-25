@@ -87,11 +87,7 @@ async def get_current_active_user(current_user: IUser | None = Depends(get_curre
 
 def check_user_authorization(current_user: IUser | None = Depends(get_current_active_user)) -> None:
     if not current_user:
-        raise HTTPException(
-            status_code=HTTP_401_UNAUTHORIZED,
-            detail="Could not validate credentials",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
+        raise HTTPException(status_code=HTTP_403_FORBIDDEN, detail="Not authenticated")
 
 
 async def create_access_token(
@@ -111,7 +107,11 @@ async def create_access_token(
         or not user.is_active
         or not await passwordHasher.verify(user.password_hash, password)
     ):
-        raise HTTPException(status_code=HTTP_403_FORBIDDEN, detail="Not authenticated")
+        raise HTTPException(
+            status_code=HTTP_401_UNAUTHORIZED,
+            detail="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
 
     access_token = await token_creator.create_access_token(data={"sub": login})
     refresh_token = await token_creator.create_refresh_token(data={"sub": login})

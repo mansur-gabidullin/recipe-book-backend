@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends
+from starlette.responses import Response
 
 from dependencies import (
     create_users_service,
@@ -47,7 +48,7 @@ async def add_user(
     return users_converter.from_new_user(user)
 
 
-@router.delete("/{uuid}")
+@router.delete("/{uuid}", status_code=204, response_class=Response)
 async def delete_user(
     remove_user_command: IRemoveUserCommand = Depends(create_remove_user_command),
     users_service: IUsersService = Depends(create_users_service),
