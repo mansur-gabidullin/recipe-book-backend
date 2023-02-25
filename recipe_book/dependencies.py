@@ -18,7 +18,7 @@ from application_core.users.services.users import UsersService
 from infrastructure.access_token_creator import TokenCreator
 from infrastructure.password_hasher import PasswordHasher
 from infrastructure.repositories.users import UsersRepository
-from infrastructure.session import current_session
+from infrastructure.session import AsyncScopedSession
 
 from presentation.interfaces.users_converter import IUsersConverter
 
@@ -49,7 +49,10 @@ async def create_users_converter() -> IUsersConverter:
 
 
 async def create_database_session() -> AsyncSession:
-    return current_session
+    async with AsyncScopedSession() as session:
+        async with session.begin():
+            yield session
+    await AsyncScopedSession.remove()
 
 
 async def create_users_repository(session: AsyncSession = Depends(create_database_session)) -> IUsersRepository:

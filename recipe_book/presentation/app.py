@@ -1,7 +1,8 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from settings import recipe_book_metadata, settings
+
 from .api import api_router
 
 tags_metadata = []
@@ -25,30 +26,3 @@ if settings.env_mode == "development":
         allow_methods=["*"],
         allow_headers=["*"],
     )
-
-
-@app.middleware("http")
-async def db_session_middleware(
-    request: Request,
-    call_next,
-):
-    from infrastructure.session import AsyncScopedSession
-
-    current_session = AsyncScopedSession()
-
-    # noinspection PyBroadException
-    try:
-        await current_session.begin()
-        response = await call_next(request)
-        await current_session.commit()
-    except Exception as error:
-        await current_session.rollback()
-        # todo: validation errors to response
-        # response = Response("Internal server error", status_code=500)
-        raise error
-
-    finally:
-        await current_session.close()
-        await AsyncScopedSession.remove()
-
-    return response

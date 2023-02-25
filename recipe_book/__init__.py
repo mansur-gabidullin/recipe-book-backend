@@ -34,7 +34,7 @@ def init_db():
 
     import asyncio
 
-    from infrastructure.engine import engine
+    from infrastructure.engine import async_engine
     from infrastructure.tables.base import Base
 
     # this imports needs for Base.metadata.create_all while running init_db script
@@ -55,7 +55,7 @@ def init_db():
         from infrastructure.tables.users.users import Users
         from infrastructure.password_hasher import PasswordHasher
 
-        async with engine.connect() as connection:
+        async with async_engine.connect() as connection:
             async with connection.begin():
                 await connection.run_sync(Base.metadata.drop_all)
                 await connection.run_sync(Base.metadata.create_all)
