@@ -16,10 +16,12 @@ class Settings(BaseSettings):
     db_port: int
     db_user: str
     db_password: str
-    access_token_algorithm: str
-    access_token_secret_key: str
+    token_algorithm: str
+    token_secret_key: str
+    csrf_token_expire_minutes: int
     access_token_expire_minutes: int
     refresh_token_expire_days: int
+    refresh_token_cookie_key: str
 
 
 settings = Settings(_env_file=".env", _env_file_encoding="utf-8")

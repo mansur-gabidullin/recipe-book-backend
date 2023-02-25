@@ -37,27 +37,26 @@ A backend for web app for cooking recipes.
 + PostgresQL
 
 ### Todo
-
-#### admin-panel
-- [ ] super-user
-- [ ] Logging
-- [ ] Authentication by login/password
-- [ ] OAuth2.0
-- [ ] Sending emails
+- [X] super-user
+- [X] Authentication by login/password
+- [ ] Refresh token + csrf-token
 - [ ] Permissions
+- [ ] Authentication by socials
+- [ ] Sending emails (Verify emails)
+- [ ] Verify phone numbers
 - [ ] Database migrations
+- [ ] Integrate with photo storage
 #### Recipe book
-- [ ] Photo storage
 - [ ] Parser
 - [ ] Telegram bot
 #### Monitoring
+- [ ] Logging
 - [ ] Collection of logs
 - [ ] Draw graphs
 - [ ] Send error notifications
 #### Frontend ([repo](https://github.com/mansur-gabidullin/recipe-book-frontend))
 - [ ] Captcha
 - [ ] SSR
-- [ ] Csrf-token
 #### Testing
 - [ ] unit-tests
 - [ ] API tests

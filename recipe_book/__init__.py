@@ -14,7 +14,7 @@ def create_env():
     from os.path import isfile
     from secrets import token_hex
 
-    secret_key_prefix = "ACCESS_TOKEN_SECRET_KEY"
+    secret_key_prefix = "TOKEN_SECRET_KEY"
     env_example_file_name = ".env.example"
 
     if not isfile("recipe_book/.env") and isfile(f"recipe_book/{env_example_file_name}"):

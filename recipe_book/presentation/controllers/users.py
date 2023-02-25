@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends
 
 from dependencies import (
-    get_current_active_user,
     create_users_service,
     create_users_query,
     create_users_converter,
@@ -19,8 +18,11 @@ from ..interfaces.new_user_response import INewUserResponse
 from ..interfaces.user_response import IUserResponse
 from ..interfaces.users_converter import IUsersConverter
 from ..interfaces.users_list_response import IUsersListResponse
+
 from ..beans.new_user_response import NewUserResponse
 from ..beans.user_response import UserResponse
+
+from .auth import get_current_active_user
 
 router = APIRouter(prefix="/users", tags=["users"])
 
@@ -55,8 +57,7 @@ async def delete_user(
 
 @router.get("/profile", response_model=UserResponse)
 async def get_current_user(
-    user: IUser = Depends(get_current_active_user),
+    user: IUser | None = Depends(get_current_active_user),
     users_converter: IUsersConverter = Depends(create_users_converter),
-) -> IUserResponse:
-    [user] = users_converter.from_users([user])
-    return user
+) -> IUserResponse | None:
+    return users_converter.from_users([user])[0] if user else None

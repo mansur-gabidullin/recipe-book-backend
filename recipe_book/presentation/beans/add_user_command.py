@@ -25,7 +25,7 @@ class AddUserCommand(IAddUserCommand):
     password: constr(min_length=USER_PASSWORD_MIN_LENGTH)
     password_confirm: constr(min_length=USER_PASSWORD_MIN_LENGTH)
     email: EmailStr
-    phone_number: constr(min_length=USER_PHONE_NUMBER_MIN_LENGTH, max_length=USER_PHONE_NUMBER_MAX_LENGTH)
+    phone_number: constr(min_length=USER_PHONE_NUMBER_MIN_LENGTH, max_length=USER_PHONE_NUMBER_MAX_LENGTH) = None
     name: constr(min_length=USER_NAME_MIN_LENGTH, max_length=USER_NAME_MAX_LENGTH) = None
     nickname: constr(min_length=USER_NICKNAME_MIN_LENGTH, max_length=USER_NICKNAME_MAX_LENGTH) = None
     surname: constr(min_length=USER_SURNAME_MIN_LENGTH, max_length=USER_SURNAME_MAX_LENGTH) = None

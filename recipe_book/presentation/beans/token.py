@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 
-from application_core.users.interfaces.token import IToken
+from application_core.users.interfaces.token import IAccessTokenData
 
 
 @dataclass
-class Token(IToken):
+class AccessTokenData(IAccessTokenData):
     access_token: str
     token_type: str
