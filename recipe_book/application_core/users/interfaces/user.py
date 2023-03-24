@@ -8,6 +8,7 @@ from application_core.users.interfaces.profile import IProfile
 class IUser(Protocol):
     uuid: UUID
     login: str
+    password_hash: str
     is_removed: bool
     is_active: bool
     profile: IProfile | None

@@ -39,7 +39,7 @@ A backend for web app for cooking recipes.
 ### Todo
 - [X] super-user
 - [X] Authentication by login/password
-- [ ] Refresh token + csrf-token
+- [X] Refresh token + csrf-token
 - [ ] Permissions
 - [ ] Authentication by socials
 - [ ] Sending emails (Verify emails)

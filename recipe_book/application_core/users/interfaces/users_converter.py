@@ -7,8 +7,11 @@ from .user_result import IUserResult
 
 
 @runtime_checkable
-class IUsersServiceConverter(Protocol):
+class IUsersApplicationCoreConverter(Protocol):
     def from_users_query_result(self, users: list[IUserResult]) -> list[IUser]:
+        ...
+
+    def from_user(self, users: IUserResult) -> IUser:
         ...
 
     def to_user_data(

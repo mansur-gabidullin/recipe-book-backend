@@ -9,17 +9,15 @@ def check_dir():
 
 
 def create_env():
-    check_dir()
-
     from os.path import isfile
     from secrets import token_hex
 
     secret_key_prefix = "TOKEN_SECRET_KEY"
     env_example_file_name = ".env.example"
 
-    if not isfile("recipe_book/.env") and isfile(f"recipe_book/{env_example_file_name}"):
-        with open(f"recipe_book/{env_example_file_name}", "rt", encoding="utf-8") as input_:
-            with open("recipe_book/.env", "wt", encoding="utf-8") as output:
+    if not isfile(".env") and isfile(f"{env_example_file_name}"):
+        with open(f"{env_example_file_name}", "rt", encoding="utf-8") as input_:
+            with open(".env", "wt", encoding="utf-8") as output:
                 for line in input_.readlines():
                     new_line = (
                         line.replace(f"{secret_key_prefix}=", f"{secret_key_prefix}={token_hex(32)}")
@@ -52,6 +50,7 @@ def init_db():
     async def init_models():
         check_dir()
 
+        from settings import settings
         from infrastructure.tables.users.users import Users
         from infrastructure.password_hasher import PasswordHasher
 
@@ -64,8 +63,8 @@ def init_db():
                     insert(Users)
                     .values(
                         {
-                            "login": "admin",
-                            "password_hash": await PasswordHasher().hash("admin"),
+                            "login": settings.super_user_login,
+                            "password_hash": await PasswordHasher().hash(settings.super_user_password),
                             "is_active": True,
                         }
                     )

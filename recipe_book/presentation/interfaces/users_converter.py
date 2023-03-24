@@ -4,12 +4,12 @@ from uuid import UUID
 from application_core.users.interfaces.user import IUser
 
 from .new_user_response import INewUserResponse
-from .users_list_response import IUsersListResponse
+from .user_response import IUserResponse
 
 
 @runtime_checkable
-class IUsersConverter(Protocol):
-    def from_users(self, users: list[IUser]) -> IUsersListResponse:
+class IUsersPresentationConverter(Protocol):
+    def from_users(self, users: list[IUser]) -> list[IUserResponse]:
         ...
 
     def from_new_user(self, uuid: UUID) -> INewUserResponse:

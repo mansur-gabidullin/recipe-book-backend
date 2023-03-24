@@ -12,6 +12,9 @@ class IUsersService(Protocol):
     async def get_users_list(self, users_query: IUsersQuery) -> list[IUser]:
         ...
 
+    async def get_user_by_login(self, login: str) -> IUser | None:
+        ...
+
     async def add_user(self, add_user_command: IAddUserCommand) -> UUID:
         ...
 

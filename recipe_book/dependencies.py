@@ -7,25 +7,25 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from application_core.users.interfaces.access_token_creator import ITokenCreator
 from application_core.users.interfaces.add_user_command import IAddUserCommand
 from application_core.users.interfaces.password_hasher import IPasswordHasher
+from application_core.users.interfaces.users_converter import IUsersApplicationCoreConverter
 from application_core.users.interfaces.users_query import IUsersQuery
 from application_core.users.interfaces.users_repository import IUsersRepository
 from application_core.users.interfaces.users_service import IUsersService
-from application_core.users.interfaces.users_service_converter import IUsersServiceConverter
-
-from application_core.users.converters.users_service_converter import UsersServiceConverter
+from application_core.users.converter import UsersApplicationCoreConverter
 from application_core.users.services.users import UsersService
 
+from infrastructure.interfaces.users_converter import IUsersInfrastructureConverter
 from infrastructure.access_token_creator import TokenCreator
+from infrastructure.converter import UsersInfrastructureConverter
 from infrastructure.password_hasher import PasswordHasher
 from infrastructure.repositories.users import UsersRepository
 from infrastructure.session import AsyncScopedSession
 
-from presentation.interfaces.users_converter import IUsersConverter
-
+from presentation.interfaces.users_converter import IUsersPresentationConverter
 from presentation.beans.add_user_command import AddUserCommand
 from presentation.beans.remove_user_command import RemoveUserCommand
 from presentation.beans.users_query import UsersQuery
-from presentation.converters.users_service import UsersConverter
+from presentation.converter import UsersPresentationConverter
 
 from settings import settings
 
@@ -44,8 +44,16 @@ async def create_remove_user_command(uuid: UUID):
     return RemoveUserCommand(uuid=uuid)
 
 
-async def create_users_converter() -> IUsersConverter:
-    return UsersConverter()
+async def create_users_presentation_converter() -> IUsersPresentationConverter:
+    return UsersPresentationConverter()
+
+
+async def create_users_application_core_converter() -> IUsersApplicationCoreConverter:
+    return UsersApplicationCoreConverter()
+
+
+async def create_users_infrastructure_converter() -> IUsersInfrastructureConverter:
+    return UsersInfrastructureConverter()
 
 
 async def create_database_session() -> AsyncSession:
@@ -55,21 +63,20 @@ async def create_database_session() -> AsyncSession:
     await AsyncScopedSession.remove()
 
 
-async def create_users_repository(session: AsyncSession = Depends(create_database_session)) -> IUsersRepository:
-    return UsersRepository(session)
+async def create_users_repository(
+    session: AsyncSession = Depends(create_database_session),
+    converter: IUsersInfrastructureConverter = Depends(create_users_infrastructure_converter),
+) -> IUsersRepository:
+    return UsersRepository(session, converter)
 
 
 async def create_password_hasher() -> IPasswordHasher:
     return PasswordHasher()
 
 
-async def create_users_service_converter() -> IUsersServiceConverter:
-    return UsersServiceConverter()
-
-
 async def create_users_service(
     repository: IUsersRepository = Depends(create_users_repository),
-    converter: IUsersServiceConverter = Depends(create_users_service_converter),
+    converter: IUsersApplicationCoreConverter = Depends(create_users_application_core_converter),
     passwordHasher: IPasswordHasher = Depends(create_password_hasher),
 ) -> IUsersService:
     return UsersService(repository, converter, passwordHasher)

@@ -10,20 +10,23 @@ from application_core.users.interfaces.user_result import IUserResult
 from application_core.users.interfaces.users_query import IUsersQuery
 from application_core.users.interfaces.users_repository import IUsersRepository
 
-from ..beans.profile_result import ProfileResult
-from ..beans.user_result import UserResult
-from ..helpers import scalar_as_dict
+from ..interfaces.users_converter import IUsersInfrastructureConverter
 from ..tables.users.profiles import Profiles
 from ..tables.users.users import Users
 
 
 class UsersRepository(IUsersRepository):
-    def __init__(self, session: AsyncSession):
+    def __init__(
+        self,
+        session: AsyncSession,
+        converter: IUsersInfrastructureConverter,
+    ):
         self._session = session
+        self._converter = converter
+        self._join_statement = select(Users, Profiles).join_from(Users, Profiles, full=True)
 
     async def get_users(self, query_query: IUsersQuery) -> list[IUserResult]:
-        result = []
-        statement = select(Users, Profiles).join_from(Users, Profiles, full=True)
+        statement = self._join_statement
 
         if query_query.login:
             statement = statement.where(Users.login == query_query.login)
@@ -31,11 +34,23 @@ class UsersRepository(IUsersRepository):
         if query_query.limit:
             statement = statement.limit(query_query.limit)
 
-        for item in (await self._session.execute(statement)).mappings():
-            profile = ProfileResult(**scalar_as_dict(item.Profiles)) if item.Profiles else None
-            result.append(UserResult(**scalar_as_dict(item.Users), profile=profile))
+        return self._converter.from_users_results(await self._session.execute(statement))
 
-        return result
+    async def get_user_by_login(self, login: str) -> IUserResult:
+        statement = self._join_statement.where(Users.login == login).limit(1)
+
+        user: IUserResult | None
+        [user] = self._converter.from_users_results(await self._session.execute(statement))
+
+        return user
+
+    async def get_user_by_uuid(self, uuid: UUID) -> IUserResult:
+        statement = self._join_statement.where(Users.uuid == uuid).limit(1)
+
+        user: IUserResult | None
+        [user] = self._converter.from_users_results(await self._session.execute(statement))
+
+        return user
 
     async def add_user(self, user_data: IUserData) -> UUID:
         statement = (
@@ -70,8 +85,6 @@ class UsersRepository(IUsersRepository):
         return uuid
 
     async def remove_user(self, remove_user_command: IRemoveUserCommand) -> None:
-        # todo: prevent delete last active admin user
-
         update_statement = (
             update(Users).where(Users.uuid == remove_user_command.uuid).values({Users.is_removed.key: True})
         )
