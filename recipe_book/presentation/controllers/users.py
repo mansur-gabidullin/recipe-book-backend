@@ -1,5 +1,7 @@
 from fastapi import APIRouter, Depends
+from starlette.exceptions import HTTPException
 from starlette.responses import Response
+from starlette.status import HTTP_400_BAD_REQUEST
 
 from dependencies import (
     create_users_service,
@@ -43,7 +45,11 @@ async def add_user(
     users_converter: IUsersPresentationConverter = Depends(create_users_presentation_converter),
     users_service: IUsersService = Depends(create_users_service),
 ) -> INewUserResponse:
-    user = await users_service.add_user(add_user_command)
+    try:
+        user = await users_service.add_user(add_user_command)
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=HTTP_400_BAD_REQUEST, detail="Incorrect data")
     return users_converter.from_new_user(user)
 
 

@@ -2,7 +2,8 @@ import os
 from importlib.metadata import metadata
 from typing import Literal
 
-from pydantic import BaseSettings
+from pydantic import ConfigDict
+from pydantic_settings import BaseSettings
 
 if os.getcwd().endswith("/recipe-book-backend"):
     os.chdir("recipe_book")
@@ -29,6 +30,8 @@ class Settings(BaseSettings):
     access_token_expire_minutes: int
     refresh_token_expire_days: int
     refresh_token_cookie_key: str
+
+    model_config = ConfigDict(extra="allow")
 
 
 settings = Settings(_env_file="../.env", _env_file_encoding="utf-8")

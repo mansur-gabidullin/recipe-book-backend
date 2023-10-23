@@ -3,7 +3,7 @@ services:
 
     # PostgresQL Service
     postgres:
-        image: postgres:15.1-alpine3.17
+        image: postgres:15.4-alpine3.18
         container_name: recipe-book-postgres
         hostname: recipe-book-postgres
         restart: unless-stopped

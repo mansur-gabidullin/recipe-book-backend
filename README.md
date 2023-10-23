@@ -6,8 +6,8 @@ A backend for web app for cooking recipes.
 + install docker (https://docs.docker.com/engine/install/)
 + launch docker
 + install pyenv (https://github.com/pyenv/pyenv#installation)
-+ install python `pyenv install 3.11`
-+ enable python version, e.g. `pyenv global 3.11` (https://github.com/pyenv/pyenv#switch-between-python-versions)
++ install python `pyenv install 3.12`
++ enable python version, e.g. `pyenv global 3.12` (https://github.com/pyenv/pyenv#switch-between-python-versions)
 + install poetry (https://python-poetry.org/docs/#installation)
 + clone project to your machine
 + open project folder in terminal
@@ -28,7 +28,7 @@ A backend for web app for cooking recipes.
 + run the pre-commit hooks against all of the files `pre-commit run --all-files`
 
 ## technology stack
-+ Python 3.11
++ Python 3.12
 + Poetry
 + Pydantic
 + FastAPI

@@ -130,8 +130,8 @@ async def create_csrf_token(
     login = authenticated_login or csrf_login or str(uuid4())
 
     if login and request_method in ("get", "head", "options"):
-        csrf_token = await token_creator.create_csrf_token(data={"sub": login})
-        response.headers[settings.csrf_token_header_key] = csrf_token
+        new_csrf_token = await token_creator.create_csrf_token(data={"sub": login})
+        response.headers[settings.csrf_token_header_key] = new_csrf_token
 
 
 async def create_access_token_data(login: str, token_creator: ITokenCreator, response: Response) -> IAccessTokenData:
