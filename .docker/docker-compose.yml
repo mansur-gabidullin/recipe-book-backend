@@ -1,17 +1,19 @@
-version: '3.9'
 services:
 
     # PostgresQL Service
     postgres:
         image: postgres:15.4-alpine3.18
         container_name: recipe-book-postgres
+        domainname: recipe-book-postgres
         hostname: recipe-book-postgres
         restart: unless-stopped
         tty: true
+        env_file:
+            - ../.env
         ports:
             - "${DB_PORT:-5432}:5432"
         environment:
-            - PGDATA=${DB_DATA_PATH:-/var/lib/postgresql/data}
+            - PGDATA=${PGDATA:-/var/lib/postgresql/data/pgdata}
             - POSTGRES_DB=${DB_NAME:-postgres}
             - POSTGRES_USER=${DB_USER:-postgres}
             - POSTGRES_PASSWORD=${DB_PASSWORD}
