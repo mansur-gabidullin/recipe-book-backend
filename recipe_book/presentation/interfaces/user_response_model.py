@@ -1,14 +1,13 @@
 from typing import Protocol, runtime_checkable
 from uuid import UUID
 
-from application_core.users.interfaces.profile import IProfile
+from .profile_response_model import IProfileResponseModel
 
 
 @runtime_checkable
-class IUser(Protocol):
+class IUserResponseModel(Protocol):
     uuid: UUID
     login: str
-    password_hash: str
     is_removed: bool
     is_active: bool
-    profile: IProfile | None
+    profile: IProfileResponseModel | None

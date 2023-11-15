@@ -3,5 +3,5 @@ from uuid import UUID
 
 
 @runtime_checkable
-class INewUserResponse(Protocol):
+class INewUserResponseModel(Protocol):
     uuid: UUID

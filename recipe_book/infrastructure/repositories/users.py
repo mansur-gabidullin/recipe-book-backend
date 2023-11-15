@@ -5,12 +5,12 @@ from sqlalchemy import select, insert, delete, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from application_core.users.interfaces.remove_user_command import IRemoveUserCommand
-from application_core.users.interfaces.user_data import IUserData
-from application_core.users.interfaces.user_result import IUserResult
+from application_core.users.interfaces.user_add_data import IAddUserData
+from application_core.users.interfaces.user_record import IUserRecord
 from application_core.users.interfaces.users_query import IUsersQuery
 from application_core.users.interfaces.users_repository import IUsersRepository
 
-from ..interfaces.users_converter import IUsersInfrastructureConverter
+from ..interfaces.user_converter import IUserRecordConverter
 from ..tables.users.profiles import Profiles
 from ..tables.users.users import Users
 
@@ -19,14 +19,17 @@ class UsersRepository(IUsersRepository):
     def __init__(
         self,
         session: AsyncSession,
-        converter: IUsersInfrastructureConverter,
+        converter: IUserRecordConverter,
     ):
         self._session = session
         self._converter = converter
         self._join_statement = select(Users, Profiles).join_from(Users, Profiles, full=True)
 
-    async def get_users(self, query_query: IUsersQuery) -> list[IUserResult]:
-        statement = self._join_statement
+    async def get_users(self, query_query: IUsersQuery) -> list[IUserRecord]:
+        statement = self._join_statement.where(Users.is_removed == query_query.is_removed)
+
+        if query_query.login:
+            statement = statement.where(Users.login == query_query.login)
 
         if query_query.login:
             statement = statement.where(Users.login == query_query.login)
@@ -36,23 +39,23 @@ class UsersRepository(IUsersRepository):
 
         return self._converter.from_users_results(await self._session.execute(statement))
 
-    async def get_user_by_login(self, login: str) -> IUserResult:
+    async def get_user_by_login(self, login: str) -> IUserRecord:
         statement = self._join_statement.where(Users.login == login).limit(1)
 
-        user: IUserResult | None
+        user: IUserRecord | None
         [user] = self._converter.from_users_results(await self._session.execute(statement))
 
         return user
 
-    async def get_user_by_uuid(self, uuid: UUID) -> IUserResult:
+    async def get_user_by_uuid(self, uuid: UUID) -> IUserRecord:
         statement = self._join_statement.where(Users.uuid == uuid).limit(1)
 
-        user: IUserResult | None
+        user: IUserRecord | None
         [user] = self._converter.from_users_results(await self._session.execute(statement))
 
         return user
 
-    async def add_user(self, user_data: IUserData) -> UUID:
+    async def add_user(self, user_data: IAddUserData) -> UUID:
         statement = (
             insert(Users)
             .values(

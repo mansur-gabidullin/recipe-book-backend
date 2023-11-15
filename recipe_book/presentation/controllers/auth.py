@@ -10,7 +10,7 @@ from starlette.status import HTTP_401_UNAUTHORIZED, HTTP_403_FORBIDDEN, HTTP_422
 from application_core.users.interfaces.access_token_creator import ITokenCreator
 from application_core.users.interfaces.password_hasher import IPasswordHasher
 from application_core.users.interfaces.token import IAccessTokenData
-from application_core.users.interfaces.user import IUser
+from application_core.users.interfaces.user_entity import IUserEntity
 from application_core.users.interfaces.users_service import IUsersService
 
 from dependencies import oauth2_scheme, create_token_creator, create_users_service, create_password_hasher
@@ -93,7 +93,7 @@ async def get_login_from_csrf_token(
 async def get_current_user(
     login: str | None = Depends(get_login_from_access_token),
     user_service: IUsersService = Depends(create_users_service),
-) -> IUser | None:
+) -> IUserEntity | None:
     if not login:
         return None
 
@@ -103,12 +103,12 @@ async def get_current_user(
         return user
 
 
-async def get_current_active_user(current_user: IUser | None = Depends(get_current_user)) -> IUser | None:
+async def get_current_active_user(current_user: IUserEntity | None = Depends(get_current_user)) -> IUserEntity | None:
     if current_user and current_user.is_active:
         return current_user
 
 
-async def check_user_authorization(current_user: IUser | None = Depends(get_current_active_user)) -> None:
+async def check_user_authorization(current_user: IUserEntity | None = Depends(get_current_active_user)) -> None:
     if not current_user:
         raise HTTPException(status_code=HTTP_403_FORBIDDEN, detail="Not authenticated")
 
@@ -170,7 +170,7 @@ async def create_access_token(
 
 async def refresh_access_token(
     response: Response,
-    current_active_user: IUser | None = Depends(get_current_active_user),
+    current_active_user: IUserEntity | None = Depends(get_current_active_user),
     login: str = Depends(get_login_from_refresh_token),
     user_service: IUsersService = Depends(create_users_service),
     token_creator: ITokenCreator = Depends(create_token_creator),

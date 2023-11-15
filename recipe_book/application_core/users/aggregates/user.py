@@ -2,11 +2,11 @@ from dataclasses import dataclass
 from uuid import UUID
 
 from .profile import ProfileEntity
-from ..interfaces.user import IUser
+from ..interfaces.user_entity import IUserEntity
 
 
 @dataclass
-class UserEntity(IUser):
+class UserEntityEntity(IUserEntity):
     uuid: UUID
     login: str
     password_hash: str

@@ -2,7 +2,7 @@ from typing import Protocol, runtime_checkable
 
 
 @runtime_checkable
-class IUserData(Protocol):
+class IAddUserData(Protocol):
     is_active: bool
     login: str
     password_hash: str

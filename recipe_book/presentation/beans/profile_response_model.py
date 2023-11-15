@@ -1,13 +1,10 @@
 from dataclasses import dataclass
 
-from application_core.users.interfaces.user_data import IUserData
+from presentation.interfaces.profile_response_model import IProfileResponseModel
 
 
 @dataclass
-class UserData(IUserData):
-    is_active: bool
-    login: str
-    password_hash: str
+class ProfileResponseModel(IProfileResponseModel):
     email: str
     phone_number: str = None
     name: str = None
