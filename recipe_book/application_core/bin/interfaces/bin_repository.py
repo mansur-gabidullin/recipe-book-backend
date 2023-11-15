@@ -3,6 +3,6 @@ from uuid import UUID
 
 
 @runtime_checkable
-class IBinRepository[T](Protocol):
+class IBinRestoreRepository[T](Protocol):
     async def restore(self, uuid: UUID):
         ...

@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from starlette.exceptions import HTTPException
 from starlette.responses import Response
-from starlette.status import HTTP_400_BAD_REQUEST
+from starlette.status import HTTP_400_BAD_REQUEST, HTTP_204_NO_CONTENT
 
 from dependencies import (
     create_users_service,
@@ -53,7 +53,7 @@ async def add_user(
     return users_converter.from_new_user(user)
 
 
-@router.delete("/{uuid}", status_code=204, response_class=Response)
+@router.delete("/{uuid}", status_code=HTTP_204_NO_CONTENT, response_class=Response)
 async def delete_user(
     remove_user_command: IRemoveUserCommand = Depends(create_remove_user_command),
     users_service: IUsersService = Depends(create_users_service),

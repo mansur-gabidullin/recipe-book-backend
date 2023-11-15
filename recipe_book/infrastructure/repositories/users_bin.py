@@ -3,12 +3,12 @@ from uuid import UUID
 from sqlalchemy import update
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from application_core.bin.interfaces.bin_repository import IBinRepository
+from application_core.bin.interfaces.bin_repository import IBinRestoreRepository
 
 from ..tables.users.users import Users
 
 
-class UsersBinRepository[T](IBinRepository[T]):
+class BinRestoreRepository[T](IBinRestoreRepository[T]):
     def __init__(self, session: AsyncSession):
         self._session = session
 

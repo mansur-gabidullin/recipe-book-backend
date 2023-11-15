@@ -4,9 +4,10 @@ from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from application_core.bin.interfaces.bin_repository import IBinRepository
-from application_core.bin.interfaces.bin_service import IBinService
-from application_core.bin.services.users_bin_service import UsersBinService
+from application_core.bin.interfaces.bin_action import IBinAction
+from application_core.bin.interfaces.bin_repository import IBinRestoreRepository
+from application_core.bin.interfaces.bin_service import IBinRestoreService
+from application_core.bin.services.bin_restore_service import BinRestoreService
 from application_core.users.interfaces.access_token_creator import ITokenCreator
 from application_core.users.interfaces.add_user_command import IAddUserCommand
 from application_core.users.interfaces.password_hasher import IPasswordHasher
@@ -22,13 +23,13 @@ from infrastructure.access_token_creator import TokenCreator
 from infrastructure.converters.users_converter import UserRecordConverter
 from infrastructure.password_hasher import PasswordHasher
 from infrastructure.repositories.users import UsersRepository
-from infrastructure.repositories.users_bin import UsersBinRepository
+from infrastructure.repositories.users_bin import BinRestoreRepository
 from infrastructure.session import AsyncScopedSession
 
 from presentation.interfaces.user_converter import IUserResponseConverter
 from presentation.beans.add_user_command import AddUserCommand
 from presentation.beans.remove_user_command import RemoveUserCommand
-from presentation.beans.restore_user_command import UserRestoreCommand
+from presentation.beans.bin_command import BinCommand
 from presentation.beans.users_query import UsersQuery
 from presentation.converters.users_converter import UserResponseConverter
 
@@ -97,20 +98,20 @@ async def create_token_creator() -> ITokenCreator:
     )
 
 
-async def create_users_bin_repository(
+async def create_bin_restore_repository(
     session: AsyncSession = Depends(create_database_session),
-) -> IBinRepository:
-    return UsersBinRepository(session)
+) -> IBinRestoreRepository:
+    return BinRestoreRepository(session)
 
 
-async def create_users_bin_service(
-    repository: IBinRepository = Depends(create_users_bin_repository),
-) -> IBinService:
-    return UsersBinService(repository)
+async def create_bin_restore_service(
+    repository: IBinRestoreRepository = Depends(create_bin_restore_repository),
+) -> IBinRestoreService:
+    return BinRestoreService(repository)
 
 
-async def create_user_restore_command(uuid: UUID):
-    return UserRestoreCommand(uuid=uuid)
+async def create_bin_command(uuid: UUID, action: IBinAction):
+    return BinCommand(uuid=uuid, action=action)
 
 
 async def create_users_bin_query(login: str = None, limit: int = None) -> IUsersQuery:

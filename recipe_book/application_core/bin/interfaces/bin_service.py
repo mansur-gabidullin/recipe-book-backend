@@ -1,9 +1,9 @@
 from typing import Protocol, runtime_checkable
 
-from .user_restore_command import IUserRestoreCommand
+from .bin_restore_command import IBinCommand
 
 
 @runtime_checkable
-class IBinService[T](Protocol):
-    async def restore(self, command: IUserRestoreCommand):
+class IBinRestoreService[T](Protocol):
+    async def restore(self, command: IBinCommand):
         ...
