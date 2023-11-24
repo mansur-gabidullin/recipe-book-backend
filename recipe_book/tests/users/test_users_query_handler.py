@@ -4,7 +4,7 @@ from uuid import UUID, uuid4
 
 import pytest
 
-from application_core.users.services.users import UsersService
+from application_core.users.services.users_service import UsersService
 
 
 @pytest.mark.asyncio

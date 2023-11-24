@@ -1,6 +1,6 @@
 from uuid import uuid4
 
-from application_core.users.aggregates.user import UserEntityEntity
+from application_core.users.aggregates.user.user_entity import UserEntity
 
 
 def test_user_entity():
@@ -12,7 +12,7 @@ def test_user_entity():
         "is_active": False,
     }
 
-    user_entity = UserEntityEntity(**data)
+    user_entity = UserEntity(**data)
 
     assert data.get("uuid") == user_entity.uuid
     assert data.get("login") == user_entity.login

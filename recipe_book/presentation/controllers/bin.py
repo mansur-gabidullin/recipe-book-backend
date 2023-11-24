@@ -8,6 +8,8 @@ from application_core.bin.interfaces.bin_restore_command import IBinCommand
 from application_core.users.interfaces.users_query import IUsersQuery
 from application_core.users.interfaces.users_service import IUsersService
 
+from constants import BinActionEnum
+
 from dependencies import (
     create_bin_restore_service,
     create_bin_command,
@@ -16,9 +18,8 @@ from dependencies import (
     create_users_service,
 )
 
-from ..interfaces.user_converter import IUserResponseConverter
-from ..constants import BinActionEnum
-from ..beans.user_response_model import UserResponseModel
+from ..interfaces.users.user_converter import IUserResponseConverter
+from ..beans.users.user_response_model import UserResponseModel
 
 from .users import get_users
 

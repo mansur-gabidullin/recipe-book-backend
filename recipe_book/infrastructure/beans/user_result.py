@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 from application_core.users.interfaces.user_record import IUserRecord
 
-from infrastructure.beans.profile_result import ProfileResult
+from .profile_result import ProfileResult
 
 
 @dataclass

@@ -17,12 +17,12 @@ from application_core.users.interfaces.user_entity import IUserEntity
 from application_core.users.interfaces.users_query import IUsersQuery
 from application_core.users.interfaces.users_service import IUsersService
 
-from ..interfaces.new_user_response_model import INewUserResponseModel
-from ..interfaces.user_response_model import IUserResponseModel
-from ..interfaces.user_converter import IUserResponseConverter
+from ..interfaces.users.new_user_response_model import INewUserResponseModel
+from ..interfaces.users.user_response_model import IUserResponseModel
+from ..interfaces.users.user_converter import IUserResponseConverter
 
-from ..beans.new_user_response_model import NewUserResponseModel
-from ..beans.user_response_model import UserResponseModel
+from ..beans.users.new_user_response_model import NewUserResponseModel
+from ..beans.users.user_response_model import UserResponseModel
 
 from .auth import get_current_active_user
 
@@ -47,6 +47,7 @@ async def add_user(
 ) -> INewUserResponseModel:
     try:
         user = await users_service.add_user(add_user_command)
+    # todo: use custom error
     except Exception as e:
         print(e)
         raise HTTPException(status_code=HTTP_400_BAD_REQUEST, detail="Incorrect data")

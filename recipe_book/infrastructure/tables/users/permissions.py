@@ -3,7 +3,7 @@ from uuid import uuid4
 from sqlalchemy import String, Uuid
 from sqlalchemy.orm import Mapped, mapped_column
 
-from application_core.users.constants import PERMISSION_NAME_MAX_LENGTH
+from constants import PERMISSION_NAME_MAX_LENGTH
 from ..base import Base
 
 

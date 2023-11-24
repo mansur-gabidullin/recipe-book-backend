@@ -47,6 +47,12 @@ def init_db():
         users_groups,
     )
 
+    # noinspection PyUnresolvedReferences
+    from infrastructure.tables.products import products
+
+    # noinspection PyUnresolvedReferences
+    from infrastructure.tables.recipes import ingredients, cooking_steps, recipes
+
     async def init_models():
         check_dir()
 
