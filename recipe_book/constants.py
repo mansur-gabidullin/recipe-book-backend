@@ -1,10 +1,10 @@
 from enum import StrEnum, auto
 from typing import Final
 
+API_VERSION = "v1"
+API_PREFIX = f"/api/{API_VERSION}"
 
-class BinActionEnum(StrEnum):
-    RESTORE = auto()
-
+ACCESS_TOKEN_TYPE = "bearer"
 
 USER_LOGIN_MIN_LENGTH: Final = 5
 USER_LOGIN_MAX_LENGTH: Final = 255
@@ -44,3 +44,7 @@ RECIPE_IMAGE_URL_MAX_LENGTH: Final = 1000
 
 RECIPE_AUTHOR_MIN_LENGTH: Final = 5
 RECIPE_AUTHOR_MAX_LENGTH: Final = 255
+
+
+class BinActionEnum(StrEnum):
+    RESTORE = auto()

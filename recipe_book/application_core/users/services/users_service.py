@@ -2,8 +2,9 @@ from uuid import UUID
 
 from settings import settings
 
+from shared_kernal.interfaces.password_hasher import IPasswordHasher
+
 from ..interfaces.add_user_command import IAddUserCommand
-from ..interfaces.password_hasher import IPasswordHasher
 from ..interfaces.remove_user_command import IRemoveUserCommand
 from ..interfaces.user_entity import IUserEntity
 from ..interfaces.users_query import IUsersQuery

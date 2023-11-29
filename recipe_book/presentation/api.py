@@ -1,14 +1,16 @@
 from fastapi import APIRouter, Depends
 
-from .controllers import users, auth, bin, products, recipes
-from .controllers.auth import check_user_authorization, create_csrf_token, check_csrf_token
+from constants import API_PREFIX
 
-authorized_router = APIRouter(dependencies=[Depends(check_user_authorization), Depends(check_csrf_token)])
+from .controllers import users, auth, bin, products, recipes, dictionaries
+
+authorized_router = APIRouter(dependencies=[Depends(auth.check_access_token), Depends(auth.check_csrf_token)])
 authorized_router.include_router(users.router)
 authorized_router.include_router(bin.router)
 authorized_router.include_router(products.router)
 authorized_router.include_router(recipes.router)
+authorized_router.include_router(dictionaries.router)
 
-api_router = APIRouter(prefix="/api", dependencies=[Depends(create_csrf_token)])
+api_router = APIRouter(prefix=f"{API_PREFIX}", dependencies=[Depends(auth.issue_csrf_token)])
 api_router.include_router(auth.router)
 api_router.include_router(authorized_router)

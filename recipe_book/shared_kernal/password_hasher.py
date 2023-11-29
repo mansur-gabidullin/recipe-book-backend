@@ -3,7 +3,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed, Future
 from argon2 import PasswordHasher as Hasher
 from argon2.exceptions import VerifyMismatchError, VerificationError, InvalidHash, HashingError
 
-from application_core.users.interfaces.password_hasher import IPasswordHasher
+from .interfaces.password_hasher import IPasswordHasher
 
 
 class PasswordHasher(IPasswordHasher):

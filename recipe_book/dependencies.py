@@ -4,29 +4,42 @@ from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from settings import settings
+
+from constants import API_PREFIX
+
+from shared_kernal.interfaces.access_token_creator import ITokenCreator
+from shared_kernal.interfaces.password_hasher import IPasswordHasher
+from shared_kernal.access_token_creator import TokenCreator
+from shared_kernal.password_hasher import PasswordHasher
+
+from application_core.auth.interfaces.auth_service import IAuthService
+from application_core.auth.services.auth_service import AuthService
+
 from application_core.bin.interfaces.bin_restore_command import IBinCommand
 from application_core.bin.interfaces.bin_action import IBinAction
-from application_core.bin.interfaces.bin_repository import IBinRestoreRepository
-from application_core.bin.interfaces.bin_service import IBinRestoreService
-from application_core.bin.services.bin_restore_service import BinRestoreService
-from application_core.products.beans.add_product_command import AddProductCommand
-from application_core.products.converters.products_service_converter import ProductsServiceConverter
+from application_core.bin.interfaces.bin_repository import IBinRepository
+from application_core.bin.interfaces.bin_service import IBinService
+from application_core.bin.services.bin_restore_service import BinService
+
 from application_core.products.interfaces.add_product_command import IAddProductCommand
 from application_core.products.interfaces.products_query import IProductsQuery
 from application_core.products.interfaces.products_repository import IProductsRepository
 from application_core.products.interfaces.products_service import IProductsService
 from application_core.products.interfaces.products_service_converter import IProductsServiceConverter
+from application_core.products.beans.add_product_command import AddProductCommand
+from application_core.products.converters.products_service_converter import ProductsServiceConverter
 from application_core.products.services.products_service import ProductsService
-from application_core.recipes.converters.recipes_service_converter import RecipesServiceConverter
+
 from application_core.recipes.interfaces.add_recipe_command import IAddRecipeCommand
 from application_core.recipes.interfaces.recipes_service_converter import IRecipesServiceConverter
 from application_core.recipes.interfaces.recipes_query import IRecipesQuery
 from application_core.recipes.interfaces.recipes_repository import IRecipesRepository
 from application_core.recipes.interfaces.recipes_service import IRecipesService
+from application_core.recipes.converters.recipes_service_converter import RecipesServiceConverter
 from application_core.recipes.services.recipes_service import RecipesService
-from application_core.users.interfaces.access_token_creator import ITokenCreator
+
 from application_core.users.interfaces.add_user_command import IAddUserCommand
-from application_core.users.interfaces.password_hasher import IPasswordHasher
 from application_core.users.interfaces.remove_user_command import IRemoveUserCommand
 from application_core.users.interfaces.users_service_converter import IUsersServiceConverter
 from application_core.users.interfaces.users_query import IUsersQuery
@@ -38,15 +51,13 @@ from application_core.users.services.users_service import UsersService
 from infrastructure.interfaces.product_repository_converter import IProductRepositoryConverter
 from infrastructure.interfaces.recipe_repository_converter import IRecipeRepositoryConverter
 from infrastructure.interfaces.user_repository_converter import IUserRepositoryConverter
-from infrastructure.access_token_creator import TokenCreator
 from infrastructure.converters.product_repository_converter import ProductRepositoryConverter
 from infrastructure.converters.recipe_repository_converter import RecipeRepositoryConverter
 from infrastructure.converters.user_repository_converter import UserRepositoryConverter
-from infrastructure.password_hasher import PasswordHasher
 from infrastructure.repositories.products_repository import ProductsRepository
 from infrastructure.repositories.recipes_repository import RecipesRepository
 from infrastructure.repositories.users_repository import UsersRepository
-from infrastructure.repositories.users_bin_repository import BinRestoreRepository
+from infrastructure.repositories.users_bin_repository import BinRepository
 from infrastructure.session import AsyncScopedSession
 
 from presentation.interfaces.products.product_converter import IProductResponseConverter
@@ -63,9 +74,7 @@ from presentation.converters.products_response_converter import ProductResponseC
 from presentation.converters.recipes_response_converter import RecipeResponseConverter
 from presentation.converters.users_response_converter import UserResponseConverter
 
-from settings import settings
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/auth/token", auto_error=False)
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl=f"{API_PREFIX}/auth/token", auto_error=False)
 
 
 async def create_users_query(login: str = None, limit: int = None) -> IUsersQuery:
@@ -113,9 +122,9 @@ async def create_password_hasher() -> IPasswordHasher:
 async def create_users_service(
     repository: IUsersRepository = Depends(create_users_repository),
     converter: IUsersServiceConverter = Depends(create_users_service_converter),
-    passwordHasher: IPasswordHasher = Depends(create_password_hasher),
+    password_hasher: IPasswordHasher = Depends(create_password_hasher),
 ) -> IUsersService:
-    return UsersService(repository, converter, passwordHasher)
+    return UsersService(repository, converter, password_hasher)
 
 
 async def create_token_creator() -> ITokenCreator:
@@ -128,16 +137,24 @@ async def create_token_creator() -> ITokenCreator:
     )
 
 
+async def create_auth_service(
+    token_creator: ITokenCreator = Depends(create_token_creator),
+    user_service: IUsersService = Depends(create_users_service),
+    password_hasher: IPasswordHasher = Depends(create_password_hasher),
+) -> IAuthService:
+    return AuthService(token_creator, user_service, password_hasher)
+
+
 async def create_bin_restore_repository(
     session: AsyncSession = Depends(create_database_session),
-) -> IBinRestoreRepository:
-    return BinRestoreRepository(session)
+) -> IBinRepository:
+    return BinRepository(session)
 
 
 async def create_bin_restore_service(
-    repository: IBinRestoreRepository = Depends(create_bin_restore_repository),
-) -> IBinRestoreService:
-    return BinRestoreService(repository)
+    repository: IBinRepository = Depends(create_bin_restore_repository),
+) -> IBinService:
+    return BinService(repository)
 
 
 async def create_bin_command(uuid: UUID, action: IBinAction) -> IBinCommand:

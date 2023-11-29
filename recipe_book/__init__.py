@@ -58,7 +58,7 @@ def init_db():
 
         from settings import settings
         from infrastructure.tables.users.users import Users
-        from infrastructure.password_hasher import PasswordHasher
+        from shared_kernal.password_hasher import PasswordHasher
 
         async with async_engine.connect() as connection:
             async with connection.begin():

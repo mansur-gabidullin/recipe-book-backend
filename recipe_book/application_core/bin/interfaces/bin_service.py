@@ -4,6 +4,6 @@ from .bin_restore_command import IBinCommand
 
 
 @runtime_checkable
-class IBinRestoreService[T](Protocol):
+class IBinService[T](Protocol):
     async def restore(self, command: IBinCommand):
         ...

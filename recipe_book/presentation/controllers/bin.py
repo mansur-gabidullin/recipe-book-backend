@@ -3,7 +3,7 @@ from starlette.responses import Response
 from starlette.exceptions import HTTPException
 from starlette.status import HTTP_400_BAD_REQUEST, HTTP_204_NO_CONTENT
 
-from application_core.bin.interfaces.bin_service import IBinRestoreService
+from application_core.bin.interfaces.bin_service import IBinService
 from application_core.bin.interfaces.bin_restore_command import IBinCommand
 from application_core.users.interfaces.users_query import IUsersQuery
 from application_core.users.interfaces.users_service import IUsersService
@@ -19,6 +19,8 @@ from dependencies import (
 )
 
 from ..interfaces.users.user_converter import IUserResponseConverter
+from ..interfaces.users.user_response_model import IUserResponseModel
+
 from ..beans.users.user_response_model import UserResponseModel
 
 from .users import get_users
@@ -31,14 +33,14 @@ async def get_bin(
     query: IUsersQuery = Depends(create_users_bin_query),
     users_converter: IUserResponseConverter = Depends(create_user_request_converter),
     users_service: IUsersService = Depends(create_users_service),
-):
+) -> list[IUserResponseModel]:
     return await get_users(query, users_converter, users_service)
 
 
 @router.put("/{uuid}", status_code=HTTP_204_NO_CONTENT, response_class=Response)
 async def restore(
     command: IBinCommand = Depends(create_bin_command),
-    bin_service: IBinRestoreService = Depends(create_bin_restore_service),
+    bin_service: IBinService = Depends(create_bin_restore_service),
 ) -> None:
     match command.action:
         case BinActionEnum.RESTORE:

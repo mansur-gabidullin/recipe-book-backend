@@ -9,11 +9,14 @@ from dependencies import (
     create_user_request_converter,
     create_add_user_command,
     create_remove_user_command,
+    create_auth_service,
 )
+
+from application_core.auth.interfaces.access_token import IAccessToken
+from application_core.auth.interfaces.auth_service import IAuthService
 
 from application_core.users.interfaces.add_user_command import IAddUserCommand
 from application_core.users.interfaces.remove_user_command import IRemoveUserCommand
-from application_core.users.interfaces.user_entity import IUserEntity
 from application_core.users.interfaces.users_query import IUsersQuery
 from application_core.users.interfaces.users_service import IUsersService
 
@@ -24,7 +27,7 @@ from ..interfaces.users.user_converter import IUserResponseConverter
 from ..beans.users.new_user_response_model import NewUserResponseModel
 from ..beans.users.user_response_model import UserResponseModel
 
-from .auth import get_current_active_user
+from .auth import get_access_token
 
 router = APIRouter(prefix="/users", tags=["users"])
 
@@ -62,9 +65,15 @@ async def delete_user(
     return await users_service.remove_user(remove_user_command)
 
 
-@router.get("/profile", response_model=UserResponseModel)
+@router.get("/profile", response_model=UserResponseModel | None)
 async def get_current_user(
-    user: IUserEntity | None = Depends(get_current_active_user),
+    access_token: IAccessToken = Depends(get_access_token),
+    auth_service: IAuthService = Depends(create_auth_service),
     users_converter: IUserResponseConverter = Depends(create_user_request_converter),
 ) -> IUserResponseModel | None:
+    if not access_token:
+        return None
+
+    user = await auth_service.get_current_active_user(access_token)
+
     return users_converter.from_users([user])[0] if user else None

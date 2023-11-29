@@ -1,11 +1,11 @@
-from ..interfaces.bin_repository import IBinRestoreRepository
-from ..interfaces.bin_service import IBinRestoreService
+from ..interfaces.bin_repository import IBinRepository
+from ..interfaces.bin_service import IBinService
 
 
-class BinRestoreService[T](IBinRestoreService[T]):
+class BinService[T](IBinService[T]):
     def __init__(
         self,
-        repository: IBinRestoreRepository[T],
+        repository: IBinRepository[T],
     ):
         self._users_repository = repository
 

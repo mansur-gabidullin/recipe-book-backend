@@ -16,6 +16,7 @@ from dependencies import (
 from ..interfaces.products.product_converter import IProductResponseConverter
 from ..interfaces.products.new_product_response_model import INewProductResponseModel
 from ..interfaces.products.product_response_model import IProductResponseModel
+
 from ..beans.products.new_product_response_model import NewProductResponseModel
 from ..beans.products.product_response_model import ProductResponseModel
 

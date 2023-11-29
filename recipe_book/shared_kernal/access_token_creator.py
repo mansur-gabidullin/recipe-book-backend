@@ -1,10 +1,10 @@
 from concurrent.futures import ThreadPoolExecutor, as_completed, Future
-from datetime import timedelta, datetime
+from datetime import timedelta, datetime, UTC
 
 from jose import jwt, JWTError
 from jose.exceptions import JWTClaimsError, ExpiredSignatureError
 
-from application_core.users.interfaces.access_token_creator import ITokenCreator
+from .interfaces.access_token_creator import ITokenCreator
 
 
 class TokenCreator(ITokenCreator):
@@ -25,7 +25,7 @@ class TokenCreator(ITokenCreator):
 
     async def create(self, data: dict, expires_delta: timedelta) -> str:
         to_encode = data.copy()
-        to_encode.update({"exp": datetime.utcnow() + expires_delta})
+        to_encode.update({"exp": datetime.now(UTC) + expires_delta})
 
         with ThreadPoolExecutor() as executor:
             future: Future
