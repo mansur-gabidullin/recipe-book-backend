@@ -63,7 +63,7 @@ async def check_access_token(
     if not access_token:
         raise_forbidden_error()
 
-    current_user = auth_service.get_current_active_user(access_token)
+    current_user = await auth_service.get_current_active_user(access_token)
 
     if not current_user:
         raise_forbidden_error()
@@ -84,7 +84,7 @@ async def check_csrf_token(
     if not csrf_token:
         raise_unprocessable_entity_error(csrf_token_expired_message)
 
-    login = auth_service.get_login_from_csrf_token(csrf_token)
+    login = await auth_service.get_login_from_csrf_token(csrf_token)
 
     if not login:
         raise_unprocessable_entity_error(csrf_token_expired_message)

@@ -1,5 +1,4 @@
-from dataclasses import dataclass
-from typing import Protocol
+from typing import Protocol, runtime_checkable
 
 from ...users.interfaces.user_entity import IUserEntity
 
@@ -8,7 +7,7 @@ from .csrf_token import ICsrfToken
 from .refresh_token import IRefreshToken
 
 
-@dataclass
+@runtime_checkable
 class IAuthService(Protocol):
     async def verify_hash(self, hash_: str, password: str) -> bool:
         ...
