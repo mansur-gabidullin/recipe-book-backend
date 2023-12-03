@@ -4,10 +4,10 @@ from sqlalchemy import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from application_core.recipes.interfaces.recipe_entity import IRecipeEntity
-
 from application_core.recipes.interfaces.recipes_repository import IRecipesRepository
 
 from ..interfaces.recipe_repository_converter import IRecipeRepositoryConverter
+
 from ..tables.recipes.cooking_steps import CookingSteps
 from ..tables.recipes.ingredients import Ingredients
 from ..tables.recipes.recipes import Recipes
@@ -67,7 +67,7 @@ class RecipesRepository(IRecipesRepository):
                     Ingredients.quantity.key: ingredient.quantity,
                     Ingredients.unit.key: ingredient.unit,
                 }
-                for i in range(data.cooking_steps)
+                for i in range(len(data.cooking_steps))
                 for ingredient in data.cooking_steps[i].ingredients
             ]
         )

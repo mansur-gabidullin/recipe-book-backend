@@ -33,8 +33,8 @@ class AddRecipeCommand(IAddRecipeCommand):
     image_url: Annotated[
         str | None,
         StringConstraints(max_length=RECIPE_IMAGE_URL_MAX_LENGTH),
-    ]
+    ] = None
     author: Annotated[
         str | None,
         StringConstraints(min_length=RECIPE_AUTHOR_MIN_LENGTH, max_length=RECIPE_AUTHOR_MAX_LENGTH),
-    ]
+    ] = None

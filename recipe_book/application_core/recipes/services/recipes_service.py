@@ -12,6 +12,7 @@ class RecipesService(IRecipesService):
         self._converter = converter
 
     async def get_recipes(self, recipes_query) -> list[IRecipeEntity]:
+        # todo
         return []
 
     async def add_recipe(self, add_recipe_command) -> UUID:

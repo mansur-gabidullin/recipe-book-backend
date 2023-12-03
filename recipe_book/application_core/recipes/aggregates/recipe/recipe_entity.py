@@ -12,5 +12,5 @@ class RecipeEntity(IRecipeEntity):
     description: str
     number_of_servings: int
     cooking_steps: list[CookingStepEntity]
-    image_url: str | None
-    author: str | None
+    image_url: str = None
+    author: str = None

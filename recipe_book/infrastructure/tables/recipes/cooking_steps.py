@@ -1,6 +1,6 @@
 from uuid import uuid4
 
-from sqlalchemy import Uuid, String, ForeignKey
+from sqlalchemy import Uuid, String, ForeignKey, Boolean
 from sqlalchemy.orm import mapped_column, Mapped
 
 from constants import RECIPE_DESCRIPTION_MAX_LENGTH, RECIPE_IMAGE_URL_MAX_LENGTH
@@ -16,3 +16,4 @@ class CookingSteps(Base):
     recipe_uuid = mapped_column("recipe_uuid", ForeignKey(Recipes.uuid))
     description: Mapped[str] = mapped_column("description", String(RECIPE_DESCRIPTION_MAX_LENGTH))
     image_url: Mapped[str | None] = mapped_column("image_url", String(RECIPE_IMAGE_URL_MAX_LENGTH), nullable=True)
+    is_removed: Mapped[bool] = mapped_column("is_removed", Boolean, default=False)
