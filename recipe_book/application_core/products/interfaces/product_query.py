@@ -1,7 +1,8 @@
 from typing import Protocol, runtime_checkable
+from uuid import UUID
 
 
 @runtime_checkable
-class IProductsQuery(Protocol):
-    limit: int | None
+class IProductQuery(Protocol):
+    uuid: UUID
     is_removed: bool

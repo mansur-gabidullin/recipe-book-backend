@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from ..interfaces.add_product_command import IAddProductCommand
+from application_core.products.interfaces.add_product_command import IAddProductCommand
 
 
 @dataclass

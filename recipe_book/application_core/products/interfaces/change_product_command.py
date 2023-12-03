@@ -1,11 +1,8 @@
 from typing import Protocol, runtime_checkable
-from uuid import UUID
 
 
 @runtime_checkable
-class IProductEntity(Protocol):
-    uuid: UUID
+class IChangeProductCommand(Protocol):
     name: str
     description: str | None
     image_url: str | None
-    is_removed: bool
