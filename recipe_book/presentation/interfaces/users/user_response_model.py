@@ -8,6 +8,6 @@ from .profile_response_model import IProfileResponseModel
 class IUserResponseModel(Protocol):
     uuid: UUID
     login: str
+    profile: IProfileResponseModel | None
     is_removed: bool
     is_active: bool
-    profile: IProfileResponseModel | None

@@ -11,6 +11,6 @@ class UserEntity(IUserEntity):
     uuid: UUID
     login: str
     password_hash: str
-    is_removed: bool
-    is_active: bool
     profile: ProfileEntity = None
+    is_active: bool = False
+    is_removed: bool = False

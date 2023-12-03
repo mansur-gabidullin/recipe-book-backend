@@ -10,6 +10,6 @@ from .profile_response_model import ProfileResponseModel
 class UserResponseModel(IUserResponseModel):
     uuid: UUID
     login: str
-    is_removed: bool
-    is_active: bool
     profile: ProfileResponseModel = None
+    is_active: bool = False
+    is_removed: bool = False

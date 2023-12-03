@@ -9,7 +9,7 @@ from ..interfaces.users_service_converter import IUsersServiceConverter
 
 
 class UsersServiceConverter(IUsersServiceConverter):
-    def from_user(self, user: IUserRecord) -> IUserEntity:
+    def from_record(self, user: IUserRecord) -> IUserEntity:
         return UserEntity(
             uuid=user.uuid,
             login=user.login,
@@ -31,8 +31,8 @@ class UsersServiceConverter(IUsersServiceConverter):
             else None,
         )
 
-    def from_users_query_result(self, users: list[IUserRecord]) -> list[IUserEntity]:
-        return [self.from_user(user) for user in users]
+    def from_records(self, users: list[IUserRecord]) -> list[IUserEntity]:
+        return [self.from_record(user) for user in users]
 
     def to_user_data(
         self, add_user_command: IAddUserCommand, password_hash: str, *, is_active: bool = True

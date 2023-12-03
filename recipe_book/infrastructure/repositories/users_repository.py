@@ -25,25 +25,22 @@ class UsersRepository(IUsersRepository):
         self._converter = converter
         self._join_statement = select(Users, Profiles).join_from(Users, Profiles, full=True)
 
-    async def get_users(self, query_query: IUsersQuery) -> list[IUserRecord]:
-        statement = self._join_statement.where(Users.is_removed == query_query.is_removed)
+    async def get_users(self, query: IUsersQuery) -> list[IUserRecord]:
+        statement = self._join_statement.where(Users.is_removed == query.is_removed)
 
-        if query_query.login:
-            statement = statement.where(Users.login == query_query.login)
+        if query.login:
+            statement = statement.where(Users.login == query.login)
 
-        if query_query.login:
-            statement = statement.where(Users.login == query_query.login)
+        if query.limit:
+            statement = statement.limit(query.limit)
 
-        if query_query.limit:
-            statement = statement.limit(query_query.limit)
-
-        return self._converter.from_users_results(await self._session.execute(statement))
+        return self._converter.from_query_results(await self._session.execute(statement))
 
     async def get_user_by_login(self, login: str) -> IUserRecord:
         statement = self._join_statement.where(Users.login == login).limit(1)
 
         user: IUserRecord | None
-        [user] = self._converter.from_users_results(await self._session.execute(statement))
+        [user] = self._converter.from_query_results(await self._session.execute(statement))
 
         return user
 
@@ -51,7 +48,7 @@ class UsersRepository(IUsersRepository):
         statement = self._join_statement.where(Users.uuid == uuid).limit(1)
 
         user: IUserRecord | None
-        [user] = self._converter.from_users_results(await self._session.execute(statement))
+        [user] = self._converter.from_query_results(await self._session.execute(statement))
 
         return user
 

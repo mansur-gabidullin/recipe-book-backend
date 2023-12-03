@@ -1,6 +1,6 @@
 from uuid import uuid4
 
-from sqlalchemy import ForeignKey, String, Uuid, CheckConstraint
+from sqlalchemy import ForeignKey, String, Uuid, CheckConstraint, Boolean
 from sqlalchemy.orm import Mapped, mapped_column
 
 from constants import (
@@ -32,6 +32,7 @@ class Profiles(Base):
     nickname: Mapped[str | None] = mapped_column("nickname", String(USER_NICKNAME_MAX_LENGTH), nullable=True)
     surname: Mapped[str | None] = mapped_column("surname", String(USER_SURNAME_MAX_LENGTH), nullable=True)
     patronymic: Mapped[str | None] = mapped_column("patronymic", String(USER_PATRONYMIC_MAX_LENGTH), nullable=True)
+    is_removed: Mapped[bool] = mapped_column("is_removed", Boolean, default=False)
 
 
 CheckConstraint(Profiles.email.like("_%@_%.__%"), name=f"{Profiles.email.key}_is_email")

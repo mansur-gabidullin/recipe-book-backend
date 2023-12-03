@@ -24,13 +24,13 @@ class UsersService(IUsersService):
         self._password_hasher = password_hasher
         self._users_service_converter = converter
 
-    async def get_users_list(self, users_query: IUsersQuery) -> list[IUserEntity]:
-        users_query_result = await self._users_repository.get_users(users_query)
-        return self._users_service_converter.from_users_query_result(users_query_result)
+    async def get_users(self, users_query: IUsersQuery) -> list[IUserEntity]:
+        users_records = await self._users_repository.get_users(users_query)
+        return self._users_service_converter.from_records(users_records)
 
     async def get_user_by_login(self, login: str) -> IUserEntity:
         users_query_result = await self._users_repository.get_user_by_login(login)
-        return self._users_service_converter.from_user(users_query_result)
+        return self._users_service_converter.from_record(users_query_result)
 
     async def add_user(self, add_user_command: IAddUserCommand) -> UUID:
         password_hash = await self._password_hasher.hash(add_user_command.password)

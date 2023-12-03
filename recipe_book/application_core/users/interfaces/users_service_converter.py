@@ -8,10 +8,10 @@ from .user_record import IUserRecord
 
 @runtime_checkable
 class IUsersServiceConverter(Protocol):
-    def from_users_query_result(self, users: list[IUserRecord]) -> list[IUserEntity]:
+    def from_records(self, users: list[IUserRecord]) -> list[IUserEntity]:
         ...
 
-    def from_user(self, users: IUserRecord) -> IUserEntity:
+    def from_record(self, users: IUserRecord) -> IUserEntity:
         ...
 
     def to_user_data(

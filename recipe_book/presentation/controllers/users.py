@@ -38,8 +38,8 @@ async def get_users(
     users_converter: IUserResponseConverter = Depends(create_user_request_converter),
     users_service: IUsersService = Depends(create_users_service),
 ) -> list[IUserResponseModel]:
-    users = await users_service.get_users_list(users_query)
-    return users_converter.from_users(users)
+    users = await users_service.get_users(users_query)
+    return users_converter.from_entities(users)
 
 
 @router.post("/", response_model=NewUserResponseModel)
@@ -76,4 +76,4 @@ async def get_current_user(
 
     user = await auth_service.get_current_active_user(access_token)
 
-    return users_converter.from_users([user])[0] if user else None
+    return users_converter.from_entities([user])[0] if user else None

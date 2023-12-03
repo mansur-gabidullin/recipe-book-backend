@@ -9,6 +9,6 @@ class IUserEntity(Protocol):
     uuid: UUID
     login: str
     password_hash: str
-    is_removed: bool
-    is_active: bool
     profile: IProfileEntity | None
+    is_active: bool
+    is_removed: bool

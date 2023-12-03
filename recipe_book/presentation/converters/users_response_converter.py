@@ -9,7 +9,7 @@ from ..beans.users.user_response_model import UserResponseModel
 
 
 class UserResponseConverter(IUserResponseConverter):
-    def from_users(self, users: list[IUserEntity]) -> list[IUserResponseModel]:
+    def from_entities(self, users: list[IUserEntity]) -> list[IUserResponseModel]:
         return [
             UserResponseModel(
                 uuid=user.uuid,

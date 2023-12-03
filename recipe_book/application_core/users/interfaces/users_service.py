@@ -9,7 +9,7 @@ from .user_entity import IUserEntity
 
 @runtime_checkable
 class IUsersService(Protocol):
-    async def get_users_list(self, users_query: IUsersQuery) -> list[IUserEntity]:
+    async def get_users(self, users_query: IUsersQuery) -> list[IUserEntity]:
         ...
 
     async def get_user_by_login(self, login: str) -> IUserEntity | None:

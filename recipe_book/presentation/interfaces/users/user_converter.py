@@ -9,7 +9,7 @@ from .user_response_model import IUserResponseModel
 
 @runtime_checkable
 class IUserResponseConverter(Protocol):
-    def from_users(self, users: list[IUserEntity]) -> list[IUserResponseModel]:
+    def from_entities(self, users: list[IUserEntity]) -> list[IUserResponseModel]:
         ...
 
     def from_new_user(self, uuid: UUID) -> INewUserResponseModel:

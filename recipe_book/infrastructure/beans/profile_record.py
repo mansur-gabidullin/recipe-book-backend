@@ -2,11 +2,11 @@ from uuid import UUID
 
 from dataclasses import dataclass
 
-from application_core.users.interfaces.profile_result import IProfileResult
+from application_core.users.interfaces.profile_result import IProfileRecord
 
 
 @dataclass
-class ProfileResult(IProfileResult):
+class ProfileRecord(IProfileRecord):
     uuid: UUID
     user_uuid: UUID
     email: str

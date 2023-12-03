@@ -26,7 +26,7 @@ async def test_users_query_handler():
     converter = Mock()
 
     use_case = UsersService(repository, converter, password_hasher)
-    await use_case.get_users_list(query_dto)
+    await use_case.get_users(query_dto)
 
     repository.get_users.assert_awaited_once()
     repository.get_users.assert_has_calls([call(query_dto)])

@@ -3,7 +3,7 @@ from uuid import UUID
 
 
 @runtime_checkable
-class IProfileResult(Protocol):
+class IProfileRecord(Protocol):
     uuid: UUID
     user_uuid: UUID
     email: str
