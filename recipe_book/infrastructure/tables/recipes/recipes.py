@@ -1,6 +1,6 @@
 from uuid import uuid4
 
-from sqlalchemy import Uuid, String, Integer, Boolean
+from sqlalchemy import Uuid, String, Integer
 from sqlalchemy.orm import mapped_column, Mapped
 
 from constants import (
@@ -22,4 +22,3 @@ class Recipes(Base):
     number_of_servings: Mapped[str] = mapped_column("number_of_servings", Integer)
     image_url: Mapped[str | None] = mapped_column("image_url", String(RECIPE_IMAGE_URL_MAX_LENGTH), nullable=True)
     author: Mapped[str | None] = mapped_column("author", String(RECIPE_AUTHOR_MAX_LENGTH), nullable=True)
-    is_removed: Mapped[bool] = mapped_column("is_removed", Boolean, default=False)

@@ -23,5 +23,5 @@ class IProductsService(Protocol):
     async def update_product(self, uuid: UUID, command: IChangeProductCommand) -> IProductEntity:
         ...
 
-    async def remove_product(self, command: IRemoveProductCommand) -> None:
+    async def delete_product(self, command: IRemoveProductCommand) -> None:
         ...

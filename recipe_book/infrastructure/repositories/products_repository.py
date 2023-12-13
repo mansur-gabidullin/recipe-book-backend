@@ -24,16 +24,14 @@ class ProductsRepository(IProductsRepository):
         self._converter = converter
 
     async def get_product(self, query: IProductQuery) -> IProductRecord | None:
-        statement = (
-            select(Products).where((Products.uuid == query.uuid) & (Products.is_removed == query.is_removed)).limit(1)
-        )
+        statement = select(Products).where(Products.uuid == query.uuid).limit(1)
 
         records = self._converter.from_query_results(await self._session.execute(statement))
 
         return records[0] if len(records) > 0 else None
 
     async def get_products(self, query: IProductsQuery) -> list[IProductRecord]:
-        statement = select(Products).where(Products.is_removed == query.is_removed)
+        statement = select(Products)
 
         if query.limit:
             statement = statement.limit(query.limit)
@@ -72,11 +70,6 @@ class ProductsRepository(IProductsRepository):
         )
 
         return self._converter.from_query_results(await self._session.execute(statement))[0]
-
-    async def remove_product(self, command: IRemoveProductCommand) -> None:
-        update_statement = update(Products).where(Products.uuid == command.uuid).values({Products.is_removed.key: True})
-
-        await self._session.execute(update_statement)
 
     async def delete_product(self, command: IRemoveProductCommand) -> None:
         delete_statement = delete(Products).where(Products.uuid == command.uuid)

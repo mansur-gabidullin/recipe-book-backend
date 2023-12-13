@@ -57,7 +57,7 @@ class RecipesRepository(IRecipesRepository):
             .returning(CookingSteps.uuid)
         )
 
-        steps_uuids = (await self._session.execute(statement)).all()
+        steps_uuids = (await self._session.execute(statement)).scalars().all()
 
         statement = insert(Ingredients).values(
             [

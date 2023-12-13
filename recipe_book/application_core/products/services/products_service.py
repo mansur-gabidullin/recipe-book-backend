@@ -32,5 +32,5 @@ class ProductsService(IProductsService):
         data = self._converter.to_product_data(command)
         return self._converter.from_record(await self._repository.update_product(uuid, data))
 
-    async def remove_product(self, command: IRemoveProductCommand) -> None:
-        return await self._repository.remove_product(command)
+    async def delete_product(self, command: IRemoveProductCommand) -> None:
+        return await self._repository.delete_product(command)

@@ -13,7 +13,6 @@ class ProductsServiceConverter(IProductsServiceConverter):
             name=record.name,
             description=record.description,
             image_url=record.image_url,
-            is_removed=record.is_removed,
         )
 
     def from_records(self, records: list[IProductRecord]) -> list[IProductEntity]:

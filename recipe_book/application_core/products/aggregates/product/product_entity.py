@@ -10,4 +10,3 @@ class ProductEntity(IProductEntity):
     name: str
     description: str = None
     image_url: str = None
-    is_removed: bool = False

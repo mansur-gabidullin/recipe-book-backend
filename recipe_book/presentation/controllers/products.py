@@ -88,4 +88,4 @@ async def delete_product(
     command: IRemoveProductCommand = Depends(create_remove_product_command),
     service: IProductsService = Depends(create_products_service),
 ) -> None:
-    return await service.remove_product(command)
+    return await service.delete_product(command)
